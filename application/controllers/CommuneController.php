@@ -21,8 +21,8 @@ class CommuneController extends Zend_Controller_Action {
             if ($form->isValid($formData)) {
                 $nom = $form->getValue('nom');
                 $label = $form->getValue('label');
-                $albums = new Application_Model_DbTable_Commune();
-                $albums->ajouterCommune($label, $nom);
+                $communes = new Application_Model_DbTable_Commune();
+                $communes->ajouterCommune($label, $nom);
 
                 $this->_helper->redirector('index');
             } else {

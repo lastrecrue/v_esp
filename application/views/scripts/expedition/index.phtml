@@ -1,4 +1,29 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Expedition</b> and script/action name <b>index</b></p>
-</div>
+<?php
+$this->title = 'Les Expedition';
+$this->headTitle($this->title);
+?>
+<p><a href="<?php echo $this->url(array('controller'=>'expedition',
+        'action'=>'ajouter'));?>">Ajouter une nouvelle commune</a></p>
+<table>
+    <tr>
+        <th>Label</th>
+        <th>Date initiale</th>
+        <th>Date reel</th>
+        <th>nb Famille</th>
+        <th>&nbsp;</th>
+    </tr>
+<?php foreach($this->expeditions as $expedition) : ?>
+    <tr>
+        <td><?php echo $this->escape($expedition->label);?></td>
+        <td><?php echo $this->escape($expedition->date_init);?></td>
+        <td><?php echo $this->escape($expedition->date_reel);?></td>
+        <td><?php echo $this->escape($expedition->nb_famille);?></td>
+        <td>
+            <a href="<?php echo $this->url(array('controller'=>'expedition',
+                'action'=>'modifier', 'id'=>$expedition->idexpedition));?>">Modifier</a>
+            <a href="<?php echo $this->url(array('controller'=>'expedition',
+                'action'=>'supprimer', 'id'=>$expedition->idexpedition));?>">Supprimer</a>
+        </td>
+    </tr>
+<?php endforeach; ?>
+</table>
