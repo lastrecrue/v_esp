@@ -24,7 +24,8 @@ echo $this->doctype();
     <head>
         <?php echo $this->headMeta(); ?>
         <?php echo $this->headTitle(); ?>
-        <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+        <?php echo $this->headLink()->prependStylesheet($this->baseUrl() . '/style.css'); ?>
+
     </head>
     <body>
         <div id="wrapper">
