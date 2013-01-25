@@ -1,4 +1,15 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Commune</b> and script/action name <b>supprimer</b></p>
-</div>
+<?php
+$this->title = "Supprimer une commune";
+$this->headTitle($this->title);
+?>
+<p>Êtes-vous sûr de vouloir supprimer 
+    '<?php echo $this->escape($this->commune['label']); ?>'
+    '<?php echo $this->escape($this->commune['nom']); ?>' ?
+</p>
+<form action="<?php echo $this->url(array('action' => 'supprimer')); ?>" method="post">
+    <div>
+        <input type="hidden" name="idcommune" value="<?php echo $this->commune['idcommune']; ?>" />
+        <input type="submit" name="supprimer" value="Oui" />
+        <input type="submit" name="supprimer" value="Non" />
+    </div>
+</form>

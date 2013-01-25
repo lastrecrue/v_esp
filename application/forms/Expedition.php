@@ -3,6 +3,9 @@
 class Application_Form_Expedition extends Zend_Form {
 
     public function init() {
+
+        Zend_Dojo::enableForm($this);
+
         $this->setName('Expedition');
 
         $id = new Zend_Form_Element_Hidden('idexpedition');
@@ -14,6 +17,11 @@ class Application_Form_Expedition extends Zend_Form {
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim')
                 ->addValidator('NotEmpty');
+        
+        
+        
+        $this->addElement(new JQuery_Date_Picker());
+
 
         $date_init = new Zend_Form_Element_Text('date_init');
         $date_init->setLabel('Date initiale')
@@ -39,4 +47,6 @@ class Application_Form_Expedition extends Zend_Form {
     }
 
 }
+
+
 
