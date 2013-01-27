@@ -1,4 +1,32 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Douare</b> and script/action name <b>index</b></p>
-</div>
+<?php
+$this->title = 'Les Douare';
+$this->headTitle($this->title);
+
+?>
+<p><a href="<?php echo $this->url(array('controller'=>'douare',
+        'action'=>'ajouter'));?>">Ajouter une nouvelle Douare</a></p>
+<table>
+    <tr>
+        <th>Label</th>
+        <th>Nom</th>
+        <th>Gps alt</th>
+        <th>Gps lan</th>
+         <th>Commune</th>
+        <th>&nbsp;</th>
+    </tr>
+<?php foreach($this->douares as $douare) : ?>
+    <tr>
+        <td><?php echo $this->escape($douare->label);?></td>
+        <td><?php echo $this->escape($douare->nom);?></td>
+        <td><?php echo $this->escape($douare->gps_alt);?></td>
+        <td><?php echo $this->escape($douare->gps_lan);?></td>
+         <td><?php echo $this->escape($douare->commune_idcommune);?></td>
+        <td>
+            <a href="<?php echo $this->url(array('controller'=>'douare',
+                'action'=>'modifier', 'id'=>$douare->iddouare));?>">Modifier</a>
+            <a href="<?php echo $this->url(array('controller'=>'douare',
+                'action'=>'supprimer', 'id'=>$douare->iddouare));?>">Supprimer</a>
+        </td>
+    </tr>
+<?php endforeach; ?>
+</table>

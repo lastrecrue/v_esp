@@ -9,14 +9,14 @@ $this->headTitle($this->title);
         <th>Label</th>
         <th>&nbsp;</th>
     </tr>
-    <?php foreach ($this->communes as $commune) : ?>
+<?php foreach ($this->communes as $commune) : ?>
         <tr>
-            <td><?php echo $this->escape($commune->nom); ?></td>
-            <td><?php echo $this->escape($commune->label); ?></td>
+            <td><?php echo $this->escape($commune->nom);  ?></td>
+            <td><?php echo $this->escape($commune->label);  ?></td>
             <td>
-                <a href="<?php echo $this->url(array('controller' => 'commune', 'action' => 'modifier', 'idcommune' => $commune->idcommune)); ?>">Modifier</a>
-                <a href="<?php echo $this->url(array('controller' => 'commune', 'action' => 'supprimer', 'idcommune' => $commune->idcommune)); ?>">Supprimer</a>
+                <a href="<?php echo $this->url(array('controller' => 'commune', 'action' => 'modifier', 'id' => $commune->idcommune));  ?>">Modifier</a>
+                <a href="<?php echo $this->url(array('controller' => 'commune', 'action' => 'supprimer', 'id' => $commune->idcommune));  ?>">Supprimer</a>
             </td>
         </tr>
-    <?php endforeach; ?>
+<?php endforeach; ?>
 </table>

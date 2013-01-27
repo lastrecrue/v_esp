@@ -9,6 +9,9 @@ class CommuneController extends Zend_Controller_Action {
     public function indexAction() {
         $communes = new Application_Model_DbTable_Commune();
         $this->view->communes = $communes->fetchAll();
+
+        
+       
     }
 
     public function ajouterAction() {
@@ -39,7 +42,7 @@ class CommuneController extends Zend_Controller_Action {
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             if ($form->isValid($formData)) {
-                $id = $form->getValue('idcommune');
+                $id = $form->getValue('id');
                 $label = $form->getValue('label');
                 $nom = $form->getValue('nom');
                 $communes = new Application_Model_DbTable_Commune();
@@ -50,7 +53,7 @@ class CommuneController extends Zend_Controller_Action {
                 $form->populate($formData);
             }
         } else {
-            $id = $this->_getParam('idcommune', 0);
+            $id = $this->_getParam('id', 0);
             if ($id > 0) {
                 $communes = new Application_Model_DbTable_Commune();
                 $form->populate($communes->obtenirCommune($id));
@@ -62,14 +65,14 @@ class CommuneController extends Zend_Controller_Action {
         if ($this->getRequest()->isPost()) {
             $supprimer = $this->getRequest()->getPost('supprimer');
             if ($supprimer == 'Oui') {
-                $id = $this->getRequest()->getPost('idcommune');
+                $id = $this->getRequest()->getPost('id');
                 $communes = new Application_Model_DbTable_Commune();
                 $communes->supprimerCommune($id);
             }
 
             $this->_helper->redirector('index');
         } else {
-            $id = $this->_getParam('idcommune', 0);
+            $id = $this->_getParam('id', 0);
             $communes = new Application_Model_DbTable_Commune();
             $this->view->commune = $communes->obtenirCommune($id);
         }

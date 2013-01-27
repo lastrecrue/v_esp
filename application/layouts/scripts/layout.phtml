@@ -18,77 +18,61 @@ $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
 $this->headTitle()->setSeparator(' - ');
 $this->headTitle('Voyage Espoire');
 
+
 echo $this->doctype();
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
     <head>
-        <?php echo $this->headMeta(); ?>
-        <?php echo $this->headTitle(); ?>
-        <?php echo $this->headLink()->prependStylesheet($this->baseUrl() . '/style.css'); ?>
+        <?php echo $this->headTitle() ?>
+        <?php echo $this->headMeta() ?>
+        <?php echo $this->headLink() ?>
+        <?php echo $this->headStyle() ?>
+        <?php echo $this->headLink()->prependStylesheet($this->baseUrl() . '/css/style.css'); ?>
 
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
-        <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-        <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
-        <script>
-            $(function() {
-                $( "#datepicker" ).datepicker();
-            });
-        </script>
+
+
+        <?php
+        Zend_Dojo::enableView($this);
+
+
+        if ($this->dojo()->isEnabled()) {
+            $this->dojo()->setLocalPath($this->baseUrl() . '/js/dojo/dojo.js')
+                    ->addStyleSheetModule('dijit.themes.tundra');
+
+            echo $this->dojo();
+
+            echo $this->headScript();
+        }
+        ?>
+
+
+
 
     </head>
-    <body>
-        <div id="wrapper">
-            <div id="wrapper-bgbtm">
-                <div id="header">
-                    <div id="logo">
-                        <h1><a href="#">Voyage d'espoire</a></h1>
-                        <br/>
-                        <p>template design by <a href="http://www.freecsstemplates.org/">FCT</a></p>
-                    </div>
-                </div>
-                <!-- end #header -->
-                <div id="menu">
-                    <?= $this->partial('menu.phtml') ?>
-                </div>
-                <!-- end #menu -->
-                <div id="page">
-                    <div id="page-bgtop">
-                        <div id="page-bgbtm">
-                            <div id="content">
-                                <div class="post">
-                                    <h1><?php echo $this->escape($this->title); ?></h1>
-                                    <?php echo $this->layout()->content; ?>
-                                </div>
-                            </div>
-                            <!-- end #content -->
-                            <!--                            <div id="sidebar">
-                                                            <div id="search">
-                                                                <h2>Search</h2>
-                                                                <form method="get" action="">
-                                                                    <fieldset>
-                                                                        <input type="text" name="s" id="search-text" size="15" value="enter keywords here..." />
-                                                                        <input type="submit" id="search-submit" value="GO" />
-                                                                    </fieldset>
-                                                                </form>
-                                                            </div>
-                                                            <ul>
-                                                                <li>
-                                                                    <h2>Aliquam tempus</h2>
-                                                                    <p>Mauris vitae nisl nec metus placerat perdiet est. Phasellus dapibus semper consectetuer hendrerit.</p>
-                                                                </li>
-                                                            </ul>
-                                                        </div>-->
-                            <!-- end #sidebar -->
-                            <div style="clear: both;">&nbsp;</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- end #page -->
-                <div id="footer">
-                    <p>Copyright (c) 2011 Sitename.com. All rights reserved. Design by <a href="http://www.freecsstemplates.org/">FCT</a>.</p>
-                </div>
-                <!-- end #footer -->
-            </div>
-        </div>
+    <body  class="tundra">
+        <body>
+
+            <?php
+            $this->borderContainer()->captureStart('masterLayout', array('design' => 'headline'));
+
+            echo $this->contentPane(
+                    'menuPane', $this->partial('menu.phtml'), array('region' => 'top'), array('style' => 'background-color: darkblue;')
+            );
+
+            echo $this->contentPane(
+                    'navPane', $this->partial('nav.phtml'), array('region' => 'left'), array('style' => 'width: 200px; background-color: lightblue;')
+            );
+
+            echo $this->contentPane(
+                    'mainPane', $this->layout()->content, array('title' => $this->escape($this->title), 'region' => 'center'), array('style' => 'background-color: white;')
+            );
+
+            echo $this->contentPane(
+                    'statusPane', $this->partial('status.phtml'), array('region' => 'bottom'), array('style' => 'background-color: lightgray;')
+            );
+
+            echo $this->borderContainer()->captureEnd('masterLayout');
+            ?>
+        </body>
     </body>
 </html>
