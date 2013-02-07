@@ -9,9 +9,23 @@ class CommuneController extends Zend_Controller_Action {
     public function indexAction() {
         $communes = new Application_Model_DbTable_Commune();
         $this->view->communes = $communes->fetchAll();
-
+//        $someContent = new Application_Form_Commune();
+//        $this->view->contents = $someContent;
         
-       
+    }
+
+    public function indexjsonAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        $response = $this->getResponse();
+        $response->setHeader('Content-type', 'application/json', true);
+        $communes = new Application_Model_DbTable_Commune();
+        $data = $communes->fetchAll()->toArray();
+//        $dataTab2 = array('identifier' => 'idcommune', 'items' => $data);
+        $dataArray = array('identifier'=>'idcommune','items'=>$data);
+        $json = Zend_Json::encode($dataArray);
+//       Zend_Json::encode($json)
+        return $response->setBody($json);
     }
 
     public function ajouterAction() {

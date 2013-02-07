@@ -27,7 +27,12 @@ echo $this->doctype();
         <?php echo $this->headMeta() ?>
         <?php echo $this->headLink() ?>
         <?php echo $this->headStyle() ?>
-        <?php echo $this->headLink()->prependStylesheet($this->baseUrl() . '/css/style.css'); ?>
+        <?php
+        echo $this->headLink()->prependStylesheet($this->baseUrl() . '/css/style.css')
+                ->appendStylesheet($this->baseUrl() . '/js/dojox/grid/resources/tundraGrid.css');
+        ?>
+
+
 
 
 
@@ -36,43 +41,71 @@ echo $this->doctype();
 
 
         if ($this->dojo()->isEnabled()) {
-            $this->dojo()->setLocalPath($this->baseUrl() . '/js/dojo/dojo.js')
+            $this->dojo()->setDjConfigOption('usePlainJson', true)
+                    ->setLocalPath($this->baseUrl() . '/js/dojo/dojo.js')
                     ->addStyleSheetModule('dijit.themes.tundra');
+            $this->dojo()->requireModule('dojox.data.QueryReadStore')->requireModule('dojox.grid.DataGrid');
 
             echo $this->dojo();
 
+
+
+
             echo $this->headScript();
         }
+//        $this->headLink()->appendStylesheet($this->baseUrl() . '/js/dojox/grid/resources/tundraGrid.css');
         ?>
+
+
+
+
+
+
+
 
 
 
 
     </head>
     <body  class="tundra">
-        <body>
 
-            <?php
-            $this->borderContainer()->captureStart('masterLayout', array('design' => 'headline'));
+  <?php
+//$this->tabContainer()->captureStart('main-container',
+//                                    array('design' => 'headline'),
+//                                    array(
+//                                            'style'=>'height:400px;width:800px'
+//                                     ));
 
-            echo $this->contentPane(
-                    'menuPane', $this->partial('menu.phtml'), array('region' => 'top'), array('style' => 'background-color: darkblue;')
-            );
+      
+        $this->borderContainer()->captureStart('masterLayout', array('design' => 'headline'));
 
-            echo $this->contentPane(
-                    'navPane', $this->partial('nav.phtml'), array('region' => 'left'), array('style' => 'width: 200px; background-color: lightblue;')
-            );
+        echo $this->contentPane(
+                'menuPane', $this->partial('menu.phtml'), array('region' => 'top'), array('class' => 'menuPaneCss')
+        );
 
-            echo $this->contentPane(
-                    'mainPane', $this->layout()->content, array('title' => $this->escape($this->title), 'region' => 'center'), array('style' => 'background-color: white;')
-            );
+//            $this->contentPane()->captureStart('centerLayout', array('class' => 'centerLayoutCss'));
+        echo $this->contentPane(
+                'navPane', $this->partial('nav.phtml'), array('region' => 'left'), array('class' => 'navPaneCss')
+        );
 
-            echo $this->contentPane(
-                    'statusPane', $this->partial('status.phtml'), array('region' => 'bottom'), array('style' => 'background-color: lightgray;')
-            );
 
-            echo $this->borderContainer()->captureEnd('masterLayout');
-            ?>
-        </body>
+       
+
+        echo $this->contentPane(
+                'mainPane', $this->layout()->content, array('title' => $this->escape($this->title), 'region' => 'right'), array('class' => 'mainPaneCss')
+        );
+        
+//            $this->borderContainer()->captureEnd('centerLayout', array('class' => 'centerLayoutCss'));
+
+        echo $this->contentPane(
+                'statusPane', $this->partial('status.phtml'), array('region' => 'bottom'), array('class' => 'statusPaneCss')
+        );
+
+        echo $this->borderContainer()->captureEnd('masterLayout');
+        
+//        echo $this->tabContainer()->captureEnd('main-container');
+?>
+        ?>
+
     </body>
 </html>

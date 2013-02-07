@@ -3,28 +3,40 @@ $this->title = 'Les Personne';
 $this->headTitle($this->title);
 
 ?>
+
+
+
+<?php
+
+$this->tabContainer()->captureStart('tabcontainer', array(), array('style' => 'width:1000px;height:300px;'));
+$this->contentPane()->captureStart('tab1', array(), array('title' => 'User Manager'));
+?>
 <p><a href="<?php echo $this->url(array('controller'=>'personne',
         'action'=>'ajouter'));?>">Ajouter une nouvelle Personne</a></p>
-<table>
-    <tr>
-        <th>Nom</th>
+<script type="text/javascript" >    
+    var structure = [ 
+        { field: 'idpersonne', name: 'CommuneID', width: '50px' },
+        { field: 'nom', name : 'Nom', width: '100px' },
+        { field: 'date_naissance', name : 'Date naissance', width: '200px'},
+        { field: 'phone', name : 'phone', width: '200px'}
+    ]; 
+</script>
+
+
+<!--<th>Nom</th>
         <th>Prenom</th>
         <th>Date naissance</th>
         <th>phone</th>
-        <th>&nbsp;</th>
-    </tr>
-<?php foreach($this->personnes as $personne) : ?>
-    <tr>
-        <td><?php echo $this->escape($personne->nom);?></td>
-        <td><?php echo $this->escape($personne->prenom);?></td>
-        <td><?php echo $this->escape($personne->date_naissance);?></td>
-        <td><?php echo $this->escape($personne->phone);?></td>
-        <td>
-            <a href="<?php echo $this->url(array('controller'=>'personne',
-                'action'=>'modifier', 'id'=>$personne->idpersonne));?>">Modifier</a>
-            <a href="<?php echo $this->url(array('controller'=>'personne',
-                'action'=>'supprimer', 'id'=>$personne->idpersonne));?>">Supprimer</a>
-        </td>
-    </tr>
-<?php endforeach; ?>
-</table>
+        <th>&nbsp;</th>-->
+
+<span dojoType="dojox.data.QueryReadStore" jsId="idpersonne" url="/v_esp/public/personne/indexjson"></span>
+<div id="grid1" dojoType="dojox.grid.DataGrid" store="idpersonne" structure="structure"></div>
+
+<?php
+
+echo $this->contentPane()->captureEnd('tab1');
+echo $this->tabContainer()->captureEnd('tabcontainer');
+?>
+
+
+
