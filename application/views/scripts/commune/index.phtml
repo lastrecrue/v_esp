@@ -1,22 +1,23 @@
 <?php
+
 $this->title = 'Les Communes';
 $this->headTitle($this->title);
 ?>
-<p><a href="<?php echo $this->url(array('controller' => 'commune', 'action' => 'ajouter')); ?>">Ajouter une nouvelle commune</a></p>
-<table>
-    <tr>
-        <th>Nom</th>
-        <th>Label</th>
-        <th>&nbsp;</th>
-    </tr>
-<?php foreach ($this->communes as $commune) : ?>
-        <tr>
-            <td><?php echo $this->escape($commune->nom);  ?></td>
-            <td><?php echo $this->escape($commune->label);  ?></td>
-            <td>
-                <a href="<?php echo $this->url(array('controller' => 'commune', 'action' => 'modifier', 'id' => $commune->idcommune));  ?>">Modifier</a>
-                <a href="<?php echo $this->url(array('controller' => 'commune', 'action' => 'supprimer', 'id' => $commune->idcommune));  ?>">Supprimer</a>
-            </td>
-        </tr>
-<?php endforeach; ?>
-</table>
+
+
+<?php $this->tabContainer()->captureStart('tabcontainer', array(), array()) ?>
+ 
+	<?php $this->contentPane()->captureStart('tab1', array(), array('title' => 'User Manager')); ?>
+ 
+	<script type="text/javascript" >    
+	  var structure = [ 
+	        { field: 'idcommune', name: 'CommuneID', width: '50px' },
+	        { field: 'nom', name : 'Nom', width: '100px' },
+	        { field: 'label', name : 'Label', width: '200px'}
+	     ]; 
+	</script>
+	<span dojoType="dojox.data.QueryReadStore" jsId="idcommune" url="commune/indexjson"></span>
+	<div id="grid1" dojoType="dojox.grid.DataGrid" store="idcommune" structure="structure"></div> 
+ 
+	<?php echo $this->contentPane()->captureEnd('tab1'); ?>
+<?php echo $this->tabContainer()->captureEnd('tabcontainer'); ?>
