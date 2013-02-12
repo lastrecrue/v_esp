@@ -4,7 +4,7 @@ class TypeController extends Zend_Controller_Action
 {
 
     public function init() {
-        /* Initialize action controller here */
+      Zend_Dojo::enableView($this->view);
     }
 
     public function indexAction() {

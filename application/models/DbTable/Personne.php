@@ -20,20 +20,20 @@ class Application_Model_DbTable_Personne extends Zend_Db_Table_Abstract {
             'date_naissance' => $date_naissance,
             'adresse' => $adresse,
             'phone' => $phone,
-            'mail' => $mail, 
-            'idcommune' => $idcommune
+            'mail' => $mail,
+            'commune_idcommune' => $idcommune
         );
         $this->insert($data);
     }
 
-    public function modifierPersonne($id,$nom, $prenom, $date_naissance, $adresse, $phone, $mail, $idcommune) {
+    public function modifierPersonne($id, $nom, $prenom, $date_naissance, $adresse, $phone, $mail, $idcommune) {
         $data = array(
             'nom' => $nom,
             'prenom' => $prenom,
             'date_naissance' => $date_naissance,
             'adresse' => $adresse,
             'phone' => $phone,
-            'mail' => $mail, 
+            'mail' => $mail,
             'idcommune' => $idcommune
         );
         $this->update($data, 'idpersonne = ' . (int) $id);
@@ -42,6 +42,7 @@ class Application_Model_DbTable_Personne extends Zend_Db_Table_Abstract {
     public function supprimerPersonne($id) {
         $this->delete('idpersonne =' . (int) $id);
     }
+
 
 }
 

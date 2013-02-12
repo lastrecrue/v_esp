@@ -143,11 +143,11 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `v_esp`.`type_has_personne`
+-- Table `v_esp`.`expedition_has_type_personne`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `v_esp`.`type_has_personne` ;
+DROP TABLE IF EXISTS `v_esp`.`expedition_has_type_personne` ;
 
-CREATE  TABLE IF NOT EXISTS `v_esp`.`type_has_personne` (
+CREATE  TABLE IF NOT EXISTS `v_esp`.`expedition_has_type_personne` (
   `type_idtype` INT(11) NOT NULL ,
   `personne_idpersonne` INT(11) NOT NULL ,
   `expedition_idexpedition` INT(11) NOT NULL ,
@@ -233,7 +233,6 @@ CREATE  TABLE IF NOT EXISTS `v_esp`.`multimedia` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-USE `v_esp` ;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
