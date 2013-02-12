@@ -3,15 +3,25 @@
 class CommuneController extends Zend_Controller_Action {
 
     public function init() {
-        /* Initialize action controller here */
+        Zend_Dojo::enableView($this->view);
     }
 
     public function indexAction() {
         $communes = new Application_Model_DbTable_Commune();
         $this->view->communes = $communes->fetchAll();
+    }
 
-        
-       
+    public function indexjsonAction() {
+
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        $commune = new Application_Model_DbTable_Commune();
+        $communes = $commune->fetchAll();
+        $dojoData = new Zend_Dojo_Data('idcommune', $communes, 'idcommune');
+        $response = $this->getResponse();
+        $response->setHeader('Content-type', 'application/json', true);
+        $response->setBody($dojoData);
     }
 
     public function ajouterAction() {
