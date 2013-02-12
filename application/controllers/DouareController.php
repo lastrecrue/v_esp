@@ -11,6 +11,20 @@ class DouareController extends Zend_Controller_Action {
         $this->view->douares = $douares->fetchAll();
     }
 
+    public function indexjsonAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        $response = $this->getResponse();
+        $response->setHeader('Content-type', 'application/json', true);
+        $communes = new Application_Model_DbTable_Douare();
+        $data = $communes->fetchAll()->toArray();
+//        $dataTab2 = array('identifier' => 'idcommune', 'items' => $data);
+        $dataArray = array('identifier' => 'iddouare', 'items' => $data);
+        $json = Zend_Json::encode($dataArray);
+//       Zend_Json::encode($json)
+        return $response->setBody($json);
+    }
+
     public function ajouterAction() {
         $form = new Application_Form_Douare();
         $form->envoyer->setLabel('Ajouter');

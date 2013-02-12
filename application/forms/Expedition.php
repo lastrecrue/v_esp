@@ -28,10 +28,8 @@ class Application_Form_Expedition extends Zend_Form {
                 ->addFilter('StringTrim')
                 ->addFilter('Int');
 
-
-
-        $envoyer = new Zend_Dojo_Form_Element_Button('envoyer', array('type' => 'submit'));
-        $envoyer->setAttrib('id', 'boutonenvoyer');
+        $envoyer = new Zend_Dojo_Form_Element_Button('envoyer',array('type'=>'submit'));
+        $envoyer->setAttrib('idexpedition', 'boutonenvoyer');
 
         $this->addElements(array($id, $label, $date_init, $date_reel, $nb_famille, $envoyer));
     }

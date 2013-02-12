@@ -3,30 +3,35 @@ $this->title = 'Les Douare';
 $this->headTitle($this->title);
 
 ?>
+
+
+
+<?php
+
+$this->tabContainer()->captureStart('tabcontainer', array(), array('style' => 'width:1000px;height:300px;'));
+$this->contentPane()->captureStart('tab1', array(), array('title' => 'User Manager'));
+?>
 <p><a href="<?php echo $this->url(array('controller'=>'douare',
-        'action'=>'ajouter'));?>">Ajouter une nouvelle Douare</a></p>
-<table>
-    <tr>
-        <th>Label</th>
-        <th>Nom</th>
-        <th>Gps alt</th>
-        <th>Gps lan</th>
-         <th>Commune</th>
-        <th>&nbsp;</th>
-    </tr>
-<?php foreach($this->douares as $douare) : ?>
-    <tr>
-        <td><?php echo $this->escape($douare->label);?></td>
-        <td><?php echo $this->escape($douare->nom);?></td>
-        <td><?php echo $this->escape($douare->gps_alt);?></td>
-        <td><?php echo $this->escape($douare->gps_lan);?></td>
-         <td><?php echo $this->escape($douare->commune_idcommune);?></td>
-        <td>
-            <a href="<?php echo $this->url(array('controller'=>'douare',
-                'action'=>'modifier', 'id'=>$douare->iddouare));?>">Modifier</a>
-            <a href="<?php echo $this->url(array('controller'=>'douare',
-                'action'=>'supprimer', 'id'=>$douare->iddouare));?>">Supprimer</a>
-        </td>
-    </tr>
-<?php endforeach; ?>
-</table>
+        'action'=>'ajouter'));?>">Ajouter un nouveau douare</a></p>
+<script type="text/javascript" >    
+    var structure = [ 
+        { field: 'iddouare', name: 'CommuneID', width: '50px' },
+        { field: 'nom', name : 'Nom', width: '100px' },
+        { field: 'label', name : 'Label', width: '200px'},
+        { field: 'gps_alt', name : 'Gps Alt', width: '100px' },
+        { field: 'gps_lan', name : 'Gps Lan', width: '100px' },
+        { field: 'commune_idcommune', name : 'commune', width: '100px' }
+    ]; 
+</script>
+
+
+<span dojoType="dojox.data.QueryReadStore" jsId="iddouare" url="/v_esp/public/douare/indexjson"></span>
+<div id="grid1" dojoType="dojox.grid.DataGrid" store="iddouare" structure="structure"></div>
+
+<?php
+
+echo $this->contentPane()->captureEnd('tab1');
+echo $this->tabContainer()->captureEnd('tabcontainer');
+?>
+
+

@@ -45,6 +45,20 @@ class ExpeditionController extends Zend_Controller_Action {
         }
     }
 
+      public function indexjsonAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+        $response = $this->getResponse();
+        $response->setHeader('Content-type', 'application/json', true);
+        $communes = new Application_Model_DbTable_Expedition();
+        $data = $communes->fetchAll()->toArray();
+//        $dataTab2 = array('identifier' => 'idcommune', 'items' => $data);
+        $dataArray = array('identifier'=>'idexpedition','items'=>$data);
+        $json = Zend_Json::encode($dataArray);
+//       Zend_Json::encode($json)
+        return $response->setBody($json);
+    }
+    
     public function ajouterAction() {
         $form = new Application_Form_Expedition();
         $form->envoyer->setLabel('Ajouter');

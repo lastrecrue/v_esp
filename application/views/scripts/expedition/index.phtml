@@ -3,24 +3,31 @@ $this->title = 'Les Expedition';
 $this->headTitle($this->title);
 ?>
 
-<?php $this->tabContainer()->captureStart('tabcontainer', array(), array()) ?>
 
-<?php $this->contentPane()->captureStart('tab1', array(), array('title' => 'User Manager')); ?>
-<p><a href="<?php echo $this->url(array('controller' => 'expedition',
-    'action' => 'ajouter'));
-?>">Ajouter une nouvelle Expedition</a></p>
 
+<?php
+
+$this->tabContainer()->captureStart('tabcontainer', array(), array('style' => 'width:1000px;height:300px;'));
+$this->contentPane()->captureStart('tab1', array(), array('title' => 'User Manager'));
+?>
+<p><a href="<?php echo $this->url(array('controller'=>'expedition',
+        'action'=>'ajouter'));?>">Ajouter une nouvelle Expediton</a></p>
 <script type="text/javascript" >    
     var structure = [ 
-        { field: 'label', name : 'Label', width: '200px'},
+        { field: 'idexpedition', name: 'CommuneID', width: '50px' },
         { field: 'date_init', name : 'Date initial', width: '100px' },
-        { field: 'date_reel', name : 'Date reel', width: '100px' },
-        { field: 'nb_famille', name : 'Nombre fammile', width: '100px' }
+        { field: 'date_reel', name : 'Date Reel', width: '200px'},
+        { field: 'nb_famille', name : 'nb_famille Reel', width: '200px'}
     ]; 
 </script>
-<span dojoType="dojox.data.QueryReadStore" jsId="idcommune" url="expedition/indexjson"></span>
-<div id="grid1" dojoType="dojox.grid.DataGrid" store="idcommune" structure="structure"></div> 
 
-<?php echo $this->contentPane()->captureEnd('tab1'); ?>
-<?php echo $this->tabContainer()->captureEnd('tabcontainer'); ?>
+
+<span dojoType="dojox.data.QueryReadStore" jsId="idexpedition" url="/v_esp/public/expedition/indexjson"></span>
+<div id="grid1" dojoType="dojox.grid.DataGrid" store="idexpedition" structure="structure"></div>
+
+<?php
+
+echo $this->contentPane()->captureEnd('tab1');
+echo $this->tabContainer()->captureEnd('tabcontainer');
+?>
 
