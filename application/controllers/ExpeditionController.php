@@ -3,12 +3,46 @@
 class ExpeditionController extends Zend_Controller_Action {
 
     public function init() {
-        
+        Zend_Dojo::enableView($this->view);
     }
 
     public function indexAction() {
         $expeditions = new Application_Model_DbTable_Expedition();
         $this->view->expeditions = $expeditions->fetchAll();
+    }
+
+    public function indexjsonAction() {
+
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        $expedition = new Application_Model_DbTable_Expedition();
+        $expeditions = $expedition->fetchAll();
+        $dojoData = new Zend_Dojo_Data('idexpedition', $expeditions, 'idexpedition');
+        $response = $this->getResponse();
+        $response->setHeader('Content-type', 'application/json', true);
+        $response->setBody($dojoData);
+    }
+
+    public function ajouterpersonneAction() {
+        $form = new Application_Form_Expedition();
+        $form->clearElements();
+
+        $this->view->form = $form;
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            if ($form->isValid($formData)) {
+                //TODO
+            }
+        } else {
+            $id = $this->_getParam('id', 0);
+            $personne = new Application_Model_DbTable_Personne();            
+            // TODO expedition personne
+            $source = $personne->getPersonneInExpedition($id);
+            $destination = $personne->getPersonneNotInExpedition($id);
+            $form->initDnd($id, $source, $destination);
+        }
     }
 
     public function ajouterAction() {
@@ -27,7 +61,7 @@ class ExpeditionController extends Zend_Controller_Action {
                 if ($date_reel) {
                     $date_reel = new Zend_Date();
                     $date_reel->set($date_reel, 'dd/MM/yy');
-                }else{
+                } else {
                     $date_reel = new Zend_Date();
                     $date_reel->set('01/01/9999', 'dd/MM/yy');
                 }
@@ -43,7 +77,7 @@ class ExpeditionController extends Zend_Controller_Action {
         }
     }
 
-   public function modifierAction() {
+    public function modifierAction() {
         $form = new Application_Form_Expedition();
         $form->envoyer->setLabel('Sauvegarder');
         $this->view->form = $form;
@@ -60,7 +94,7 @@ class ExpeditionController extends Zend_Controller_Action {
                 if ($date_reel) {
                     $date_reel = new Zend_Date();
                     $date_reel->set($date_reel, 'dd/MM/yy');
-                }else{
+                } else {
                     $date_reel = new Zend_Date();
                     $date_reel->set('01/01/9999', 'dd/MM/yy');
                 }
