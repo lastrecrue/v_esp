@@ -11,6 +11,14 @@ class CommuneController extends Zend_Controller_Action {
         $this->view->communes = $communes->fetchAll();
     }
 
+    public function communelistAction() {
+        $communes = new Application_Model_DbTable_Commune();
+        $select = $communes->select()->from('commune', array('idcommune', 'label'));
+        $result = $communes->getAdapter()->query($select)->fetchAll();
+        $data = new Zend_Dojo_Data('idcommune', $result);
+        $this->_helper->autoCompleteDojo($data);
+    }
+
     public function indexjsonAction() {
 
         $this->_helper->layout->disableLayout();

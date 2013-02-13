@@ -27,6 +27,16 @@ class Application_Form_Expedition extends Zend_Form {
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim')
                 ->addFilter('Int');
+        
+        
+        $idpacktage = new Zend_Dojo_Form_Element_FilteringSelect('$idpacktage');
+        $idpacktage->setLabel('Packtage')
+                ->setAutoComplete(true)
+                ->setStoreId('packtageStore')
+                ->setStoreType('dojo.data.ItemFileReadStore')
+                ->setStoreParams(array('url' => '/v_esp/public/packtage/packtagelist'))
+                ->setAttrib("searchAttr", "label")
+                ->setRequired(true);
 
         $envoyer = new Zend_Dojo_Form_Element_Button('envoyer',array('type'=>'submit'));
         $envoyer->setAttrib('idexpedition', 'boutonenvoyer');

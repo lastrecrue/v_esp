@@ -18,10 +18,8 @@ class DouareController extends Zend_Controller_Action {
         $response->setHeader('Content-type', 'application/json', true);
         $communes = new Application_Model_DbTable_Douare();
         $data = $communes->fetchAll()->toArray();
-//        $dataTab2 = array('identifier' => 'idcommune', 'items' => $data);
         $dataArray = array('identifier' => 'iddouare', 'items' => $data);
         $json = Zend_Json::encode($dataArray);
-//       Zend_Json::encode($json)
         return $response->setBody($json);
     }
 
@@ -43,8 +41,8 @@ class DouareController extends Zend_Controller_Action {
                 $douares->ajouterDouare($label, $nom, $gps_alt, $gps_lan, $idcommune);
 
                 $this->_helper->redirector('index');
-            } else {
-                $form->populate($formData);
+            } else {                
+                //TODO
             }
         }
     }

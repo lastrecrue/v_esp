@@ -3,7 +3,7 @@
 class Application_Form_Douare extends Zend_Form {
 
     public function init() {
-        $this->setName('commune');
+        $this->setName('douare');
         $id = new Zend_Form_Element_Hidden('id');
         $id->addFilter('Int');
 
@@ -33,18 +33,20 @@ class Application_Form_Douare extends Zend_Form {
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim')
                 ->addValidator('NotEmpty');
-       
-        $idcommune = new Zend_Dojo_Form_Element_TextBox('idcommune');
-        $idcommune->setLabel('Commune')
-                ->setRequired(true)
-                ->addFilter('StripTags')
-                ->addFilter('StringTrim')
-                ->addValidator('NotEmpty');
 
-        $envoyer = new Zend_Dojo_Form_Element_Button('envoyer',array('type'=>'submit'));
+        $idcommune = new Zend_Dojo_Form_Element_FilteringSelect('idcommune');
+        $idcommune->setLabel('Commune')
+                ->setAutoComplete(true)
+                ->setStoreId('communeStore')
+                ->setStoreType('dojo.data.ItemFileReadStore')
+                ->setStoreParams(array('url' => '/v_esp/public/commune/communelist'))
+                ->setAttrib("searchAttr", "label")
+                ->setRequired(true);
+
+        $envoyer = new Zend_Dojo_Form_Element_Button('envoyer', array('type' => 'submit'));
         $envoyer->setAttrib('id', 'boutonenvoyer');
 
-        $this->addElements(array($id, $label, $nom, $gps_alt, $gps_lan, $idcommune,$envoyer));
+        $this->addElements(array($id, $label, $nom, $gps_alt, $gps_lan, $idcommune, $envoyer));
     }
 
 }
