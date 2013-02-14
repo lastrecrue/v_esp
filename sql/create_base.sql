@@ -2,8 +2,11 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
+DROP SCHEMA IF EXISTS `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci ;
 DROP SCHEMA IF EXISTS `v_esp` ;
 CREATE SCHEMA IF NOT EXISTS `v_esp` DEFAULT CHARACTER SET latin1 ;
+USE `mydb` ;
 USE `v_esp` ;
 
 -- -----------------------------------------------------
@@ -41,6 +44,7 @@ CREATE  TABLE IF NOT EXISTS `v_esp`.`douare` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = latin1;
 
 
@@ -50,9 +54,12 @@ DEFAULT CHARACTER SET = latin1;
 DROP TABLE IF EXISTS `v_esp`.`packtage` ;
 
 CREATE  TABLE IF NOT EXISTS `v_esp`.`packtage` (
-  `idpacktage` INT NOT NULL ,
+  `idpacktage` INT(11) NOT NULL AUTO_INCREMENT ,
+  `label` VARCHAR(45) NULL DEFAULT NULL ,
   PRIMARY KEY (`idpacktage`) )
-ENGINE = InnoDB;
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
@@ -66,7 +73,7 @@ CREATE  TABLE IF NOT EXISTS `v_esp`.`expedition` (
   `date_init` DATE NOT NULL ,
   `date_reel` DATE NULL DEFAULT NULL ,
   `nb_famille` INT(11) NULL DEFAULT NULL ,
-  `packtage_idpacktage` INT NOT NULL ,
+  `packtage_idpacktage` INT(11) NOT NULL ,
   PRIMARY KEY (`idexpedition`) ,
   INDEX `fk_expedition_packtage1_idx` (`packtage_idpacktage` ASC) ,
   CONSTRAINT `fk_expedition_packtage1`
@@ -75,6 +82,7 @@ CREATE  TABLE IF NOT EXISTS `v_esp`.`expedition` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
+AUTO_INCREMENT = 10
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -90,14 +98,14 @@ CREATE  TABLE IF NOT EXISTS `v_esp`.`expedition_has_douare` (
   PRIMARY KEY (`expedition_idexpedition`, `douare_iddouare`, `douare_commune_idcommune`) ,
   INDEX `fk_expedition_has_douare_douare1_idx` (`douare_iddouare` ASC, `douare_commune_idcommune` ASC) ,
   INDEX `fk_expedition_has_douare_expedition1_idx` (`expedition_idexpedition` ASC) ,
-  CONSTRAINT `fk_expedition_has_douare_expedition1`
-    FOREIGN KEY (`expedition_idexpedition` )
-    REFERENCES `v_esp`.`expedition` (`idexpedition` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_expedition_has_douare_douare1`
     FOREIGN KEY (`douare_iddouare` , `douare_commune_idcommune` )
     REFERENCES `v_esp`.`douare` (`iddouare` , `commune_idcommune` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_expedition_has_douare_expedition1`
+    FOREIGN KEY (`expedition_idexpedition` )
+    REFERENCES `v_esp`.`expedition` (`idexpedition` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -117,7 +125,7 @@ CREATE  TABLE IF NOT EXISTS `v_esp`.`personne` (
   `adresse` VARCHAR(200) NULL DEFAULT NULL ,
   `phone` VARCHAR(20) NULL DEFAULT NULL ,
   `mail` VARCHAR(45) NULL DEFAULT NULL ,
-  `commune_idcommune` INT(11) NOT NULL ,
+  `commune_idcommune` INT(11) NULL DEFAULT NULL ,
   PRIMARY KEY (`idpersonne`) ,
   INDEX `fk_personne_commune1_idx` (`commune_idcommune` ASC) ,
   CONSTRAINT `fk_personne_commune1`
@@ -126,6 +134,7 @@ CREATE  TABLE IF NOT EXISTS `v_esp`.`personne` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
+AUTO_INCREMENT = 12
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -155,9 +164,9 @@ CREATE  TABLE IF NOT EXISTS `v_esp`.`expedition_has_type_personne` (
   INDEX `fk_type_has_personne_personne1_idx` (`personne_idpersonne` ASC) ,
   INDEX `fk_type_has_personne_type_idx` (`type_idtype` ASC) ,
   INDEX `fk_type_has_personne_expedition1_idx` (`expedition_idexpedition` ASC) ,
-  CONSTRAINT `fk_type_has_personne_type`
-    FOREIGN KEY (`type_idtype` )
-    REFERENCES `v_esp`.`type` (`idtype` )
+  CONSTRAINT `fk_type_has_personne_expedition1`
+    FOREIGN KEY (`expedition_idexpedition` )
+    REFERENCES `v_esp`.`expedition` (`idexpedition` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_type_has_personne_personne1`
@@ -165,13 +174,34 @@ CREATE  TABLE IF NOT EXISTS `v_esp`.`expedition_has_type_personne` (
     REFERENCES `v_esp`.`personne` (`idpersonne` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_type_has_personne_expedition1`
-    FOREIGN KEY (`expedition_idexpedition` )
-    REFERENCES `v_esp`.`expedition` (`idexpedition` )
+  CONSTRAINT `fk_type_has_personne_type`
+    FOREIGN KEY (`type_idtype` )
+    REFERENCES `v_esp`.`type` (`idtype` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `v_esp`.`multimedia`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `v_esp`.`multimedia` ;
+
+CREATE  TABLE IF NOT EXISTS `v_esp`.`multimedia` (
+  `idmultimedia` INT(11) NOT NULL AUTO_INCREMENT ,
+  `label` VARCHAR(45) NULL DEFAULT NULL ,
+  `path` VARCHAR(200) NULL DEFAULT NULL ,
+  `type_idtype` INT(11) NOT NULL ,
+  PRIMARY KEY (`idmultimedia`, `type_idtype`) ,
+  INDEX `fk_multimedia_type1_idx` (`type_idtype` ASC) ,
+  CONSTRAINT `fk_multimedia_type1`
+    FOREIGN KEY (`type_idtype` )
+    REFERENCES `v_esp`.`type` (`idtype` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
@@ -180,13 +210,14 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `v_esp`.`produit` ;
 
 CREATE  TABLE IF NOT EXISTS `v_esp`.`produit` (
-  `idproduit` INT NOT NULL ,
+  `idproduit` INT(11) NOT NULL ,
   `label` VARCHAR(45) NOT NULL ,
-  `nom` VARCHAR(45) NULL ,
-  `unite_mesure` VARCHAR(45) NULL ,
-  `quantite` INT NULL ,
+  `nom` VARCHAR(45) NULL DEFAULT NULL ,
+  `unite_mesure` VARCHAR(45) NULL DEFAULT NULL ,
+  `quantite` INT(11) NULL DEFAULT NULL ,
   PRIMARY KEY (`idproduit`) )
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
@@ -195,9 +226,9 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `v_esp`.`packtage_has_produit` ;
 
 CREATE  TABLE IF NOT EXISTS `v_esp`.`packtage_has_produit` (
-  `packtage_idpacktage` INT NOT NULL ,
-  `produit_idproduit` INT NOT NULL ,
-  `nb_produit` INT NULL ,
+  `packtage_idpacktage` INT(11) NOT NULL ,
+  `produit_idproduit` INT(11) NOT NULL ,
+  `nb_produit` INT(11) NULL DEFAULT NULL ,
   PRIMARY KEY (`packtage_idpacktage`, `produit_idproduit`) ,
   INDEX `fk_packtage_has_produit_produit1_idx` (`produit_idproduit` ASC) ,
   INDEX `fk_packtage_has_produit_packtage1_idx` (`packtage_idpacktage` ASC) ,
@@ -211,27 +242,8 @@ CREATE  TABLE IF NOT EXISTS `v_esp`.`packtage_has_produit` (
     REFERENCES `v_esp`.`produit` (`idproduit` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `v_esp`.`multimedia`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `v_esp`.`multimedia` ;
-
-CREATE  TABLE IF NOT EXISTS `v_esp`.`multimedia` (
-  `idmultimedia` INT NOT NULL AUTO_INCREMENT ,
-  `label` VARCHAR(45) NULL ,
-  `path` VARCHAR(200) NULL ,
-  `type_idtype` INT(11) NOT NULL ,
-  PRIMARY KEY (`idmultimedia`, `type_idtype`) ,
-  INDEX `fk_multimedia_type1_idx` (`type_idtype` ASC) ,
-  CONSTRAINT `fk_multimedia_type1`
-    FOREIGN KEY (`type_idtype` )
-    REFERENCES `v_esp`.`type` (`idtype` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
 
 
 

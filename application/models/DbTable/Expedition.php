@@ -17,23 +17,25 @@ class Application_Model_DbTable_Expedition extends Zend_Db_Table_Abstract {
         $this->delete('idexpedition = ' . $id);
     }
 
-    public function modifierExpedition($id, $label, $date_init, $date_reel, $nb_famille) {
+    public function modifierExpedition($id, $label, $date_init, $date_reel, $nb_famille, $idpacktage) {
 
         $data = array(
             'label' => $label,
             'date_init' => $date_init,
             'date_reel' => $date_reel,
-            'nb_famille' => $nb_famille
+            'nb_famille' => $nb_famille,
+            'packtage_idpacktage' => $idpacktage
         );
         $this->update($data, 'idexpedition = ' . $id);
     }
 
-    public function ajouterExpedition($label, $date_int, $date_reel, $nb_famille) {
+    public function ajouterExpedition($label, $date_int, $date_reel, $nb_famille, $idpacktage) {
         $data = array(
             'label' => $label,
             'date_init' => $date_int,
             'date_reel' => $date_reel,
-            'nb_famille' => $nb_famille
+            'nb_famille' => $nb_famille,
+            'packtage_idpacktage' => $idpacktage
         );
         $logger = new Zend_Log(new Zend_Log_Writer_Stream('C:\xampp\htdocs\v_esp\log\debug.log'));
         $logger->log($date_int, Zend_Log::DEBUG);

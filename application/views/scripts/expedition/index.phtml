@@ -7,17 +7,18 @@ $this->headTitle($this->title);
 
 <?php
 
-$this->tabContainer()->captureStart('tabcontainer', array(), array('style' => 'width:1000px;height:300px;'));
+$this->tabContainer()->captureStart('tabcontainer', array(), array());
 $this->contentPane()->captureStart('tab1', array(), array('title' => 'User Manager'));
 ?>
 <p><a href="<?php echo $this->url(array('controller'=>'expedition',
         'action'=>'ajouter'));?>">Ajouter une nouvelle Expediton</a></p>
 <script type="text/javascript" >    
     var structure = [ 
-        { field: 'idexpedition', name: 'CommuneID', width: '50px' },
+        { field: 'idexpedition', name: 'ExpeditionID', width: '150px' },
         { field: 'date_init', name : 'Date initial', width: '100px' },
-        { field: 'date_reel', name : 'Date Reel', width: '200px'},
-        { field: 'nb_famille', name : 'nb_famille Reel', width: '200px'}
+        { field: 'date_reel', name : 'Date Reel', width: '100px'},
+        { field: 'nb_famille', name : 'nb_famille Reel', width: '100px'},
+        { field: 'packtage_idpacktage', name : 'PacktageID', width: '200px'},
     ]; 
 </script>
 

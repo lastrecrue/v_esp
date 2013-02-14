@@ -41,6 +41,9 @@ class PersonneController extends Zend_Controller_Action {
                 $mail = $form->getValue('mail');
                 $idcommune = $form->getValue('idcommune');
                 $personnes = new Application_Model_DbTable_Personne();
+                if(empty($idcommune)){
+                    $idcommune =null;
+                }
                 $personnes->ajouterPersonne($nom, $prenom, $date_naissance, $adresse, $phone, $mail, $idcommune);
 
                 $this->_helper->redirector('index');

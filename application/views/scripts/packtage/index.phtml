@@ -1,0 +1,23 @@
+<?php
+
+$this->title = 'Les Communes';
+$this->headTitle($this->title);
+?>
+
+
+<?php $this->tabContainer()->captureStart('tabcontainer', array(), array()) ?>
+ 
+	<?php $this->contentPane()->captureStart('tab1', array(), array('title' => 'User Manager')); ?>
+ <p><a href="<?php echo $this->url(array('controller'=>'packtage',
+        'action'=>'ajouter'));?>">Ajouter un nouveau packtage</a></p>
+	<script type="text/javascript" >    
+	  var structure = [ 
+	        { field: 'idpacktage', name: 'PacktageID', width: '50px' },
+	        { field: 'label', name : 'Label', width: '200px'}
+	     ]; 
+	</script>
+	<span dojoType="dojox.data.QueryReadStore" jsId="idpacktage" url="packtage/indexjson"></span>
+	<div id="grid1" dojoType="dojox.grid.DataGrid" store="idpacktage" structure="structure"></div> 
+ 
+	<?php echo $this->contentPane()->captureEnd('tab1'); ?>
+<?php echo $this->tabContainer()->captureEnd('tabcontainer'); ?>

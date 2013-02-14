@@ -27,9 +27,11 @@ class Application_Form_Expedition extends Zend_Form {
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim')
                 ->addFilter('Int');
-        
-        
-        $idpacktage = new Zend_Dojo_Form_Element_FilteringSelect('$idpacktage');
+
+
+
+
+        $idpacktage = new Zend_Dojo_Form_Element_FilteringSelect('idpacktage');
         $idpacktage->setLabel('Packtage')
                 ->setAutoComplete(true)
                 ->setStoreId('packtageStore')
@@ -38,15 +40,15 @@ class Application_Form_Expedition extends Zend_Form {
                 ->setAttrib("searchAttr", "label")
                 ->setRequired(true);
 
-        $envoyer = new Zend_Dojo_Form_Element_Button('envoyer',array('type'=>'submit'));
+        $envoyer = new Zend_Dojo_Form_Element_Button('envoyer', array('type' => 'submit'));
         $envoyer->setAttrib('idexpedition', 'boutonenvoyer');
 
-        $this->addElements(array($id, $label, $date_init, $date_reel, $nb_famille, $envoyer));
+        $this->addElements(array($id, $label, $date_init, $date_reel, $nb_famille, $idpacktage, $envoyer));
     }
 
-    public function initDnd($id,$source, $destination) {
-        
-        
+    public function initDnd($id, $source, $destination) {
+
+
         $label = new Zend_Dojo_Form_Element_TextBox('label');
         $label->setLabel('Label')
                 ->setRequired(true)
@@ -58,14 +60,14 @@ class Application_Form_Expedition extends Zend_Form {
         $this->setName('Expedition Personne');
         $id = new Zend_Form_Element_Hidden('idexpedition');
         $id->addFilter('Int');
-        
+
         $element = new Element_ListShuttle('dgdBenevole');
         $element->setLabel('Benevole : ');
         $element->setAttribs(array('source' => $source, 'destination' => $destination));
 
-        
 
-        $this->addElements(array($element,$label));
+
+        $this->addElements(array($element, $label));
     }
 
 }

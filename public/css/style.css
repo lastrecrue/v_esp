@@ -8,8 +8,10 @@
 #navPane{
     float: left;
     width: 20%;
+    /*height: 500px;*/
 }
 #mainPane{
+    margin-left: 20%;
 
 }
 

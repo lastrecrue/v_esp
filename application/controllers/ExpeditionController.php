@@ -23,20 +23,6 @@ class ExpeditionController extends Zend_Controller_Action {
         $response->setHeader('Content-type', 'application/json', true);
         $response->setBody($dojoData);
     }
-//    
-//    public function indexjsonAction() {
-//        $this->_helper->layout->disableLayout();
-//        $this->_helper->viewRenderer->setNoRender(true);
-//        $response = $this->getResponse();
-//        $response->setHeader('Content-type', 'application/json', true);
-//        $communes = new Application_Model_DbTable_Expedition();
-//        $data = $communes->fetchAll()->toArray();
-////        $dataTab2 = array('identifier' => 'idcommune', 'items' => $data);
-//        $dataArray = array('identifier'=>'idexpedition','items'=>$data);
-//        $json = Zend_Json::encode($dataArray);
-////       Zend_Json::encode($json)
-//        return $response->setBody($json);
-//    }
 
     public function ajouterpersonneAction() {
         $form = new Application_Form_Expedition();
@@ -51,7 +37,7 @@ class ExpeditionController extends Zend_Controller_Action {
             }
         } else {
             $id = $this->_getParam('id', 0);
-            $personne = new Application_Model_DbTable_Personne();            
+            $personne = new Application_Model_DbTable_Personne();
             // TODO expedition personne
             $source = $personne->getPersonneInExpedition($id);
             $destination = $personne->getPersonneNotInExpedition($id);
@@ -59,8 +45,6 @@ class ExpeditionController extends Zend_Controller_Action {
         }
     }
 
-      
-    
     public function ajouterAction() {
         $form = new Application_Form_Expedition();
         $form->envoyer->setLabel('Ajouter');
@@ -82,9 +66,11 @@ class ExpeditionController extends Zend_Controller_Action {
                     $date_reel->set('01/01/9999', 'dd/MM/yy');
                 }
                 $nb_famille = (int) $form->getValue('nb_famille');
+                
+                $idpacktage = (int) $form->getValues('idpacktage');
+                
                 $expeditions = new Application_Model_DbTable_Expedition();
-
-                $expeditions->ajouterExpedition($label, $date_init->toString('YYYY-MM-dd HH:mm:ss'), $date_reel->toString('YYYY-MM-dd HH:mm:ss'), $nb_famille);
+                $expeditions->ajouterExpedition($label, $date_init->toString('YYYY-MM-dd HH:mm:ss'), $date_reel->toString('YYYY-MM-dd HH:mm:ss'), $nb_famille, $idpacktage);
 
                 $this->_helper->redirector('index');
             } else {

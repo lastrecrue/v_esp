@@ -8,7 +8,7 @@ $this->headTitle($this->title);
 
 <?php
 
-$this->tabContainer()->captureStart('tabcontainer', array(), array('style' => 'width:1000px;height:300px;'));
+$this->tabContainer()->captureStart('tabcontainer', array(), array());
 $this->contentPane()->captureStart('tab1', array(), array('title' => 'User Manager'));
 ?>
 <p><a href="<?php echo $this->url(array('controller'=>'douare',
@@ -17,10 +17,10 @@ $this->contentPane()->captureStart('tab1', array(), array('title' => 'User Manag
     var structure = [ 
         { field: 'iddouare', name: 'CommuneID', width: '50px' },
         { field: 'nom', name : 'Nom', width: '100px' },
-        { field: 'label', name : 'Label', width: '200px'},
-        { field: 'gps_alt', name : 'Gps Alt', width: '100px' },
-        { field: 'gps_lan', name : 'Gps Lan', width: '100px' },
-        { field: 'commune_idcommune', name : 'commune', width: '100px' }
+        { field: 'label', name : 'Label', width: '100px'},
+        { field: 'gps_alt', name : 'Gps Alt', width: '50px' },
+        { field: 'gps_lan', name : 'Gps Lan', width: '50px' },
+        { field: 'commune_idcommune', name : 'commune', width: '50px' }
     ]; 
 </script>
 
