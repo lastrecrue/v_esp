@@ -78,8 +78,10 @@ class PersonneController extends Zend_Controller_Action {
             }
         } else {
             $id = $this->_getParam('id', 0);
+            
+//            $id = $form->getValue('id');
             if ($id > 0) {
-                $personnes = new Application_Model_DbTable_Personne();
+                $personnes = new Application_Model_DbTable_Personne();                
                 $form->populate($personnes->obtenirPersonne($id));
             }
         }

@@ -1,18 +1,20 @@
 <?php
 $this->title = 'Les Personne';
 $this->headTitle($this->title);
-
 ?>
 
-
-
 <?php
-
 $this->tabContainer()->captureStart('tabcontainer', array(), array());
 $this->contentPane()->captureStart('tab1', array(), array('title' => 'User Manager'));
 ?>
-<p><a href="<?php echo $this->url(array('controller'=>'personne',
-        'action'=>'ajouter'));?>">Ajouter une nouvelle Personne</a></p>
+<p><a href="<?php
+echo $this->url(array('controller' => 'personne',
+    'action' => 'ajouter'));
+?>">Ajouter une nouvelle Personne</a></p>
+
+
+<!--<form action="postIt" id="myform">-->
+
 <script type="text/javascript" >    
     var structure = [ 
         { field: 'idpersonne', name: 'CommuneID', width: '50px' },
@@ -30,10 +32,49 @@ $this->contentPane()->captureStart('tab1', array(), array('title' => 'User Manag
         <th>&nbsp;</th>-->
 
 <span dojoType="dojox.data.QueryReadStore" jsId="idpersonne" url="/v_esp/public/personne/indexjson"></span>
-<div id="grid1" dojoType="dojox.grid.DataGrid" store="idpersonne" structure="structure"></div>
+<div id="grid1" data-dojo-id="grid2" dojoType="dojox.grid.DataGrid" 
+     data-dojo-props="store:idpersonne,
+     structure:'structure'  ,
+     clientSort:true,
+     rowSelector:'20px'"
+     style=" height: 260px;"></div>
 
+<button  data-dojo-type="dijit.form.Button">
+    Modifier
+    <script type="dojo/method" data-dojo-event="onClick" data-dojo-args="evt">
+        
+        var items = grid2.selection.getSelected();
+        if(items.length){
+            
+            dojo.forEach(items, function(selectedItem){
+                if(selectedItem !== null){
+                    
+                        
+                        attribute = 'idpersonne';
+                        var value = grid2.store.getValues(selectedItem, attribute);
+                        
+                        
+                         dojo.xhrGet({
+                        url: "/v_esp/public/personne/modifier?id=" + value,
+                      //  postData: {
+                        //    id:  value                   
+                        //},
+                        timeout: 5000,
+                        load: function(response, ioArgs) {
+                        dojo.byId("masterLayout").innerHTML = response;
+                           // return response;
+                        }
+                     });
+                        //alert('attribute: ' + attribute + ', value: ' + value);
+                        
+                  
+                } 
+            }); 
+        } 
+    </script>
+</button>
+<!--</form>-->
 <?php
-
 echo $this->contentPane()->captureEnd('tab1');
 echo $this->tabContainer()->captureEnd('tabcontainer');
 ?>

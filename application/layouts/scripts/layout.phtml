@@ -41,8 +41,9 @@ echo $this->doctype();
             $this->dojo()->setDjConfigOption('usePlainJson', true)
                     ->setLocalPath($this->baseUrl() . '/js/dojo/dojo.js')
                     ->addStyleSheetModule('dijit.themes.tundra');
-            $this->dojo()->requireModule('dojox.data.QueryReadStore')->requireModule('dojox.grid.DataGrid');
-
+            $this->dojo()->requireModule('dojox.data.QueryReadStore')
+                    ->requireModule('dojox.grid.DataGrid')
+                    ->requireModule('dijit.form.Button');
             echo $this->dojo();
 
 
@@ -66,14 +67,14 @@ echo $this->doctype();
     </head>
     <body  class="tundra">
 
-  <?php
+        <?php
 //$this->tabContainer()->captureStart('main-container',
 //                                    array('design' => 'headline'),
 //                                    array(
 //                                            'style'=>'height:400px;width:800px'
 //                                     ));
 
-      
+
         $this->borderContainer()->captureStart('masterLayout', array('design' => 'headline'));
 
         echo $this->contentPane(
@@ -87,12 +88,12 @@ echo $this->doctype();
 
 
 
-       
+
 
         echo $this->contentPane(
                 'mainPane', $this->layout()->content, array('title' => $this->escape($this->title), 'region' => 'right'), array('class' => 'mainPaneCss')
         );
-        
+
 //            $this->borderContainer()->captureEnd('centerLayout', array('class' => 'centerLayoutCss'));
 
         echo $this->contentPane(
@@ -100,10 +101,10 @@ echo $this->doctype();
         );
 
         echo $this->borderContainer()->captureEnd('masterLayout');
-        
+
 //        echo $this->tabContainer()->captureEnd('main-container');
-?>
-       
+        ?>
+
 
     </body>
 </html>
