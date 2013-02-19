@@ -39,41 +39,29 @@ echo $this->url(array('controller' => 'personne',
      rowSelector:'20px'"
      style=" height: 260px;"></div>
 
-<button  data-dojo-type="dijit.form.Button">
-    Modifier
-    <script type="dojo/method" data-dojo-event="onClick" data-dojo-args="evt">
-        
+<div data-dojo-type="dijit/form/Form" id="myForm" data-dojo-id="myForm"
+     encType="multipart/form-data" action="personne/modifier" method="GET">
+    <script type="dojo/on" data-dojo-event="submit">
+        dojo.require("dojo.NodeList-manipulate");
         var items = grid2.selection.getSelected();
-        if(items.length){
-            
+        if(items.length){            
             dojo.forEach(items, function(selectedItem){
                 if(selectedItem !== null){
-                    
-                        
-                        attribute = 'idpersonne';
-                        var value = grid2.store.getValues(selectedItem, attribute);
-                        
-                        
-                         dojo.xhrGet({
-                        url: "/v_esp/public/personne/modifier?id=" + value,
-                      //  postData: {
-                        //    id:  value                   
-                        //},
-                        timeout: 5000,
-                        load: function(response, ioArgs) {
-                        dojo.byId("masterLayout").innerHTML = response;
-                           // return response;
-                        }
-                     });
-                        //alert('attribute: ' + attribute + ', value: ' + value);
-                        
-                  
+                    attribute = 'idpersonne';
+                    var value = grid2.store.getValues(selectedItem, attribute);                    
+                    var idpersonne = dojo.query("#id").val(value);
                 } 
             }); 
-        } 
-    </script>
-</button>
-<!--</form>-->
+        }
+        </script>
+    
+    <input type="hidden" id="id" name="id"  value="" />
+    <button data-dojo-type="dijit/form/Button"             
+            type="submit">
+        Modifier
+        
+    </button>
+</div>
 <?php
 echo $this->contentPane()->captureEnd('tab1');
 echo $this->tabContainer()->captureEnd('tabcontainer');
