@@ -39,7 +39,7 @@ class PersonneController extends Zend_Controller_Action {
                 $adresse = $form->getValue('adresse');
                 $phone = $form->getValue('phone');
                 $mail = $form->getValue('mail');
-                $idcommune = $form->getValue('idcommune');
+                $idcommune = $form->getValue('commune_idcommune');
                 $personnes = new Application_Model_DbTable_Personne();
                 if(empty($idcommune)){
                     $idcommune =null;
@@ -68,7 +68,7 @@ class PersonneController extends Zend_Controller_Action {
                 $adresse = $form->getValue('adresse');
                 $phone = $form->getValue('phone');
                 $mail = $form->getValue('mail');
-                $idcommune = $form->getValue('idcommune');
+                $idcommune = $form->getValue('commune_idcommune');
                 $personnes = new Application_Model_DbTable_Personne();
                 $personnes->modifierPersonne($id, $nom, $prenom, $date_naissance, $adresse, $phone, $mail, $idcommune);
 
@@ -78,8 +78,6 @@ class PersonneController extends Zend_Controller_Action {
             }
         } else {
             $id = $this->_getParam('id', 0);
-            
-//            $id = $form->getValue('id');
             if ($id > 0) {
                 $personnes = new Application_Model_DbTable_Personne();                
                 $form->populate($personnes->obtenirPersonne($id));

@@ -34,7 +34,7 @@ class Application_Model_DbTable_Personne extends Zend_Db_Table_Abstract {
             'adresse' => $adresse,
             'phone' => $phone,
             'mail' => $mail,
-            'idcommune' => $idcommune
+            'commune_idcommune' => $idcommune
         );
         $this->update($data, 'idpersonne = ' . (int) $id);
     }

@@ -50,7 +50,7 @@ class Application_Form_Personne extends Zend_Form {
                 ->addValidator('NotEmpty');
 
 
-        $idcommune = new Zend_Dojo_Form_Element_FilteringSelect('idcommune');
+        $idcommune = new Zend_Dojo_Form_Element_FilteringSelect('commune_idcommune');
         $idcommune->setLabel('Commune')
                 ->setAutoComplete(true)
                 ->setStoreId('communeStore')
