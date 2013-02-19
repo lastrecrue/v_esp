@@ -53,15 +53,61 @@ echo $this->url(array('controller' => 'personne',
                 } 
             }); 
         }
-        </script>
-    
+    </script>
+
     <input type="hidden" id="id" name="id"  value="" />
     <button data-dojo-type="dijit/form/Button"             
-            type="submit">
+            type="submit" onClick="myDialog.show();" >
         Modifier
-        
     </button>
+
+    <button data-dojo-type="dijit/form/Button"             
+            type="button">
+        Supprimer
+        <script type="dojo/method" data-dojo-event="onClick" data-dojo-args="evt">
+            require(["dijit/registry"], function(registry){
+            registry.byId("dialog").show();
+            });
+        </script>
+    </button>
+
+    <div id="dialog" title="Suppression" data-dojo-id="dialog" data-dojo-type="dijit/Dialog">
+        <script type="dojo/on" data-dojo-event="show">
+            
+            dojo.require("dojo.NodeList-manipulate");
+            var items = grid2.selection.getSelected();
+            if(items.length){            
+                dojo.forEach(items, function(selectedItem){
+                    if(selectedItem !== null){
+                        var idpersonne = grid2.store.getValues(selectedItem, 'idpersonne');
+                        dojo.query("#idpersonne").val(idpersonne);
+                        var nom = grid2.store.getValues(selectedItem, 'nom');
+                        var prenom = grid2.store.getValues(selectedItem, 'prenom');
+                        var detaille = prenom + ' ' + nom;
+                        //domConst.place(prenom + ' ' + nom, "detaille");
+                        alert(detaille);
+                    } 
+                }); 
+            }
+        </script>
+        <p>Êtes-vous sûr de vouloir supprimer 
+        <div id="detaille"></div>
+        </p>
+        <form action="<?php echo $this->url(array('action' => 'supprimer')); ?>" method="post">
+            <div>
+                <input type="hidden" id ="idpersonne" name="idpersonne" value="" />
+                <button data-dojo-type="dijit/form/Button"  type="submit" name="supprimer">
+                    Oui
+                </button>
+                <button data-dojo-type="dijit/form/Button" 
+                        type="button" data-dojo-props="onClick:function(){dialog.hide();}"
+                        id="cancel" >Non</button>
+            </div>
+        </form>
+    </div>
 </div>
+
+
 <?php
 echo $this->contentPane()->captureEnd('tab1');
 echo $this->tabContainer()->captureEnd('tabcontainer');
