@@ -2,16 +2,19 @@
 
 class PersonneController extends Zend_Controller_Action {
 
+   
+
     public function init() {
         Zend_Dojo::enableView($this->view);
+        
     }
 
     public function indexAction() {
         $personnes = new Application_Model_DbTable_Personne();
         $this->view->personnes = $personnes->fetchAll();
     }
-    
-      public function indexjsonAction() {
+
+    public function indexjsonAction() {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
         $response = $this->getResponse();
@@ -19,7 +22,7 @@ class PersonneController extends Zend_Controller_Action {
         $communes = new Application_Model_DbTable_Personne();
         $data = $communes->fetchAll()->toArray();
 //        $dataTab2 = array('identifier' => 'idcommune', 'items' => $data);
-        $dataArray = array('identifier'=>'idpersonne','items'=>$data);
+        $dataArray = array('identifier' => 'idpersonne', 'items' => $data);
         $json = Zend_Json::encode($dataArray);
 //       Zend_Json::encode($json)
         return $response->setBody($json);
@@ -41,8 +44,8 @@ class PersonneController extends Zend_Controller_Action {
                 $mail = $form->getValue('mail');
                 $idcommune = $form->getValue('commune_idcommune');
                 $personnes = new Application_Model_DbTable_Personne();
-                if(empty($idcommune)){
-                    $idcommune =null;
+                if (empty($idcommune)) {
+                    $idcommune = null;
                 }
                 $personnes->ajouterPersonne($nom, $prenom, $date_naissance, $adresse, $phone, $mail, $idcommune);
 
@@ -61,7 +64,7 @@ class PersonneController extends Zend_Controller_Action {
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             if ($form->isValid($formData)) {
-                $id = $form->getValue('id');
+                $id = $this->_getParam('id', 0);
                 $nom = $form->getValue('nom');
                 $prenom = $form->getValue('prenom');
                 $date_naissance = $form->getValue('date_naissance');
@@ -70,8 +73,11 @@ class PersonneController extends Zend_Controller_Action {
                 $mail = $form->getValue('mail');
                 $idcommune = $form->getValue('commune_idcommune');
                 $personnes = new Application_Model_DbTable_Personne();
-                $personnes->modifierPersonne($id, $nom, $prenom, $date_naissance, $adresse, $phone, $mail, $idcommune);
-
+                try {
+                    $personnes->modifierPersonne($id, $nom, $prenom, $date_naissance, $adresse, $phone, $mail, $idcommune);
+                } catch (Exception $e) {
+                    getLog()->log("modifier Personne : " . $e, Zend_Log::ERR);
+                }
                 $this->_helper->redirector('index');
             } else {
                 $form->populate($formData);
@@ -79,7 +85,7 @@ class PersonneController extends Zend_Controller_Action {
         } else {
             $id = $this->_getParam('id', 0);
             if ($id > 0) {
-                $personnes = new Application_Model_DbTable_Personne();                
+                $personnes = new Application_Model_DbTable_Personne();
                 $form->populate($personnes->obtenirPersonne($id));
             }
         }
@@ -100,6 +106,16 @@ class PersonneController extends Zend_Controller_Action {
             $personnes = new Application_Model_DbTable_Personne();
             $this->view->personne = $personnes->obtenirPersonne($id);
         }
+    }
+    
+    public function getLog()
+    {
+        $bootstrap = $this->getInvokeArg('bootstrap');
+        if (!$bootstrap->hasResource('Log')) {
+            return false;
+        }
+        $log = $bootstrap->getResource('Log');
+        return $log;
     }
 
 }

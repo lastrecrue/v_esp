@@ -57,7 +57,7 @@ echo $this->url(array('controller' => 'personne',
 
     <input type="hidden" id="id" name="id"  value="" />
     <button data-dojo-type="dijit/form/Button"             
-            type="submit" onClick="myDialog.show();" >
+            type="submit" >
         Modifier
     </button>
 
@@ -72,8 +72,7 @@ echo $this->url(array('controller' => 'personne',
     </button>
 
     <div id="dialog" title="Suppression" data-dojo-id="dialog" data-dojo-type="dijit/Dialog">
-        <script type="dojo/on" data-dojo-event="show">
-            
+        <script type="dojo/on" data-dojo-event="show">            
             dojo.require("dojo.NodeList-manipulate");
             var items = grid2.selection.getSelected();
             if(items.length){            
@@ -84,14 +83,12 @@ echo $this->url(array('controller' => 'personne',
                         var nom = grid2.store.getValues(selectedItem, 'nom');
                         var prenom = grid2.store.getValues(selectedItem, 'prenom');
                         var detaille = prenom + ' ' + nom;
-                        //domConst.place(prenom + ' ' + nom, "detaille");
-                        alert(detaille);
+                        dojo.query("#detaille").html(detaille);                      
                     } 
                 }); 
             }
         </script>
-        <p>Êtes-vous sûr de vouloir supprimer 
-        <div id="detaille"></div>
+        <p>Êtes-vous sûr de vouloir supprimer <div id="detaille"></div>
         </p>
         <form action="<?php echo $this->url(array('action' => 'supprimer')); ?>" method="post">
             <div>

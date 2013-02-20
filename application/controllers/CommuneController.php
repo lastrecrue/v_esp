@@ -64,6 +64,7 @@ class CommuneController extends Zend_Controller_Action {
                 $label = $form->getValue('label');
                 $nom = $form->getValue('nom');
                 $communes = new Application_Model_DbTable_Commune();
+
                 $communes->modifierCommune($id, $label, $nom);
 
                 $this->_helper->redirector('index');

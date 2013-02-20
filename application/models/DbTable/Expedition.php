@@ -36,9 +36,7 @@ class Application_Model_DbTable_Expedition extends Zend_Db_Table_Abstract {
             'date_reel' => $date_reel,
             'nb_famille' => $nb_famille,
             'packtage_idpacktage' => $idpacktage
-        );
-        $logger = new Zend_Log(new Zend_Log_Writer_Stream('C:\xampp\htdocs\v_esp\log\debug.log'));
-        $logger->log($date_int, Zend_Log::DEBUG);
+        );        
         $this->insert($data);
     }
 
