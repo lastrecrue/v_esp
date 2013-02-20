@@ -72,11 +72,14 @@ class PersonneController extends Zend_Controller_Action {
                 $phone = $form->getValue('phone');
                 $mail = $form->getValue('mail');
                 $idcommune = $form->getValue('commune_idcommune');
+                if(empty($idcommune)){
+                $idcommune = null;
+                }
                 $personnes = new Application_Model_DbTable_Personne();
                 try {
                     $personnes->modifierPersonne($id, $nom, $prenom, $date_naissance, $adresse, $phone, $mail, $idcommune);
                 } catch (Exception $e) {
-                    getLog()->log("modifier Personne : " . $e, Zend_Log::ERR);
+                    $this->getLog()->log("modifier Personne : " . $e, Zend_Log::ERR);
                 }
                 $this->_helper->redirector('index');
             } else {
@@ -95,7 +98,7 @@ class PersonneController extends Zend_Controller_Action {
         if ($this->getRequest()->isPost()) {
             $supprimer = $this->getRequest()->getPost('supprimer');
             if ($supprimer == 'Oui') {
-                $id = $this->getRequest()->getPost('id');
+                $id = $this->getRequest()->getPost('idpersonne');
                 $personnes = new Application_Model_DbTable_Personne();
                 $personnes->supprimerPersonne($id);
             }
