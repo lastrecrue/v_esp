@@ -1,5 +1,5 @@
 <?php
-$this->title = 'Les Personne';
+$this->title = 'Multimedia';
 $this->headTitle($this->title);
 ?>
 
@@ -8,18 +8,18 @@ $this->tabContainer()->captureStart('tabcontainer', array(), array());
 $this->contentPane()->captureStart('tab1', array(), array('title' => 'User Manager'));
 ?>
 <p><a href="<?php
-echo $this->url(array('controller' => 'personne',
+echo $this->url(array('controller' => 'multimedia',
     'action' => 'ajouter'));
-?>">Ajouter une nouvelle Personne</a></p>
+?>">Ajouter un nouveau élement Mutltimedia</a></p>
 
 
 <!--<form action="postIt" id="myform">-->
 
 <script type="text/javascript" >    
     var structure = [ 
-        { field: 'idpersonne', name: 'CommuneID', width: '50px' },
-        { field: 'nom', name : 'Nom', width: '100px' },
-        { field: 'date_naissance', name : 'Date naissance', width: '200px'},
+        { field: 'idmultimedia', name: 'ID', width: '50px' },
+        { field: 'label', name : 'Nom', width: '100px' },
+        { field: '', name : 'Date naissance', width: '200px'},
         { field: 'phone', name : 'phone', width: '200px'}
     ]; 
 </script>
@@ -37,7 +37,7 @@ echo $this->url(array('controller' => 'personne',
      structure:'structure'  ,
      clientSort:true,
      rowSelector:'20px'"
-     style=" height: 130px;"></div>
+     style=" height: 260px;"></div>
 
 <div data-dojo-type="dijit/form/Form" id="modifier" data-dojo-id="myForm"
      encType="multipart/form-data" action="personne/modifier" method="GET">
