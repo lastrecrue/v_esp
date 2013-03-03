@@ -36,7 +36,7 @@ class Application_Form_Expedition extends Zend_Form {
                 ->setAutoComplete(true)
                 ->setStoreId('packtageStore')
                 ->setStoreType('dojo.data.ItemFileReadStore')
-                ->setStoreParams(array('url' => '/v_esp/public/packtage/packtagelist'))
+                ->setStoreParams(array('url' => '../packtage/packtagelist'))
                 ->setAttrib("searchAttr", "label")
                 ->setRequired(true);
 
@@ -47,8 +47,6 @@ class Application_Form_Expedition extends Zend_Form {
     }
 
     public function initDnd($id, $source, $destination) {
-
-
         $label = new Zend_Dojo_Form_Element_TextBox('label');
         $label->setLabel('Label')
                 ->setRequired(true)
@@ -64,8 +62,6 @@ class Application_Form_Expedition extends Zend_Form {
         $element = new Element_ListShuttle('dgdBenevole');
         $element->setLabel('Benevole : ');
         $element->setAttribs(array('source' => $source, 'destination' => $destination));
-
-
 
         $this->addElements(array($element, $label));
     }

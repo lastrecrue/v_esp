@@ -8,9 +8,9 @@ $this->tabContainer()->captureStart('tabcontainer', array(), array());
 $this->contentPane()->captureStart('tab1', array(), array('title' => 'User Manager'));
 ?>
 <p><a href="<?php
-echo $this->url(array('controller' => 'personne',
-    'action' => 'ajouter'));
-?>">Ajouter une nouvelle Personne</a></p>
+echo $this->url(array('controller' => 'personne', 'action' => 'ajouter'));?>">
+        Ajouter une nouvelle Personne
+    </a></p>
 
 
 <!--<form action="postIt" id="myform">-->
@@ -56,13 +56,11 @@ echo $this->url(array('controller' => 'personne',
     </script>
 
     <input type="hidden" id="id" name="id"  value="" />
-    <button data-dojo-type="dijit/form/Button"             
-            type="submit" >
+    <button data-dojo-type="dijit/form/Button" type="submit">
         Modifier
     </button>
 
-    <button data-dojo-type="dijit/form/Button"             
-            type="button">
+    <button data-dojo-type="dijit/form/Button" type="button">
         Supprimer
         <script type="dojo/method" data-dojo-event="onClick" data-dojo-args="evt">
             require(["dijit/registry"], function(registry){

@@ -55,7 +55,7 @@ class Application_Form_Personne extends Zend_Form {
                 ->setAutoComplete(true)
                 ->setStoreId('communeStore')
                 ->setStoreType('dojo.data.ItemFileReadStore')
-                ->setStoreParams(array('url' => '/v_esp/public/commune/communelist'))
+                ->setStoreParams(array('url' => '../commune/communelist'))
                 ->setAttrib("searchAttr", "label");
 
 

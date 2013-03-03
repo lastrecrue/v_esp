@@ -11,7 +11,13 @@ class TypeController extends Zend_Controller_Action
         $types = new Application_Model_DbTable_Type();
         $this->view->types = $types->fetchAll();
     }
-
+    public function typelistAction() {
+        $types = new Application_Model_DbTable_Type();
+        $select = $types->select()->from('type', array('idtype', 'label'));
+        $result = $types->getAdapter()->query($select)->fetchAll();
+        $data = new Zend_Dojo_Data('idtype', $result);
+        $this->_helper->autoCompleteDojo($data);
+    }
     public function ajouterAction() {
         $form = new Application_Form_Type();
         $form->envoyer->setLabel('Ajouter');

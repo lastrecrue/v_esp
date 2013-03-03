@@ -35,7 +35,7 @@ class DouareController extends Zend_Controller_Action {
                 $label = $form->getValue('label');
                 $gps_alt = $form->getValue('gps_alt');
                 $gps_lan = $form->getValue('gps_lan');
-                $idcommune = $form->getValue('idcommune');
+                $idcommune = $form->getValue('commune_idcommune');
 
                 $douares = new Application_Model_DbTable_Douare();
                 $douares->ajouterDouare($label, $nom, $gps_alt, $gps_lan, $idcommune);
@@ -55,15 +55,19 @@ class DouareController extends Zend_Controller_Action {
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             if ($form->isValid($formData)) {
-                $id = $form->getValue('id');
+                $id = $this->_getParam('id', 0);
                 $label = $form->getValue('label');
                 $nom = $form->getValue('nom');
                 $gps_alt = $form->getValue('gps_alt');
                 $gps_lan = $form->getValue('gps_lan');
-                $idcommune = $form->getValue('idcommune');
+                $idcommune = $form->getValue('commune_idcommune');
                 $douares = new Application_Model_DbTable_Douare();
-                $douares->modifierDouare($id, $label, $nom, $gps_alt, $gps_lan, $idcommune);
-
+                $communes = new Application_Model_DbTable_Commune();
+                try {               
+                    $douares->modifierDouare($id, $label, $nom, $gps_alt, $gps_lan, $idcommune);
+                } catch (Exception $e) {
+                    $this->getLog()->log("modifier douare : " . $e, Zend_Log::ERR);
+                }
                 $this->_helper->redirector('index');
             } else {
                 $form->populate($formData);
@@ -81,7 +85,7 @@ class DouareController extends Zend_Controller_Action {
         if ($this->getRequest()->isPost()) {
             $supprimer = $this->getRequest()->getPost('supprimer');
             if ($supprimer == 'Oui') {
-                $id = $this->getRequest()->getPost('id');
+                $id = $this->getRequest()->getPost('iddouare');
                 $douares = new Application_Model_DbTable_Douare();
                 $douares->supprimerDouare($id);
             }

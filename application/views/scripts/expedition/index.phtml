@@ -24,8 +24,76 @@ $this->contentPane()->captureStart('tab1', array(), array('title' => 'User Manag
 
 
 <span dojoType="dojox.data.QueryReadStore" jsId="idexpedition" url="/v_esp/public/expedition/indexjson"></span>
-<div id="grid1" dojoType="dojox.grid.DataGrid" store="idexpedition" structure="structure"></div>
 
+<div id="grid1" data-dojo-id="grid2" dojoType="dojox.grid.DataGrid" 
+     data-dojo-props="store:idexpedition,
+     structure:'structure'  ,
+     clientSort:true,
+     rowSelector:'20px'"
+     style=" height: 260px;">
+</div>
+<div data-dojo-type="dijit/form/Form" id="modifier" data-dojo-id="myForm"
+     encType="multipart/form-data" action="expedition/modifier" method="GET">
+    <script type="dojo/on" data-dojo-event="submit">
+        dojo.require("dojo.NodeList-manipulate");
+        var items = grid2.selection.getSelected();
+        if(items.length){            
+            dojo.forEach(items, function(selectedItem){
+                if(selectedItem !== null){
+                    attribute = 'idexpedition';
+                    var value = grid2.store.getValues(selectedItem, attribute);                    
+                    var idexpedition = dojo.query("#id").val(value);
+                } 
+            }); 
+        }
+    </script>
+
+    <input type="hidden" id="id" name="id"  value="" />
+    <button data-dojo-type="dijit/form/Button"             
+            type="submit" >
+        Modifier
+    </button>
+
+    <button data-dojo-type="dijit/form/Button"             
+            type="button">
+        Supprimer
+        <script type="dojo/method" data-dojo-event="onClick" data-dojo-args="evt">
+            require(["dijit/registry"], function(registry){
+            registry.byId("dialog").show();
+            });
+        </script>
+    </button>
+
+    <div id="dialog" title="Suppression" data-dojo-id="dialog" data-dojo-type="dijit/Dialog">
+        <script type="dojo/on" data-dojo-event="show">            
+            dojo.require("dojo.NodeList-manipulate");
+            var items = grid2.selection.getSelected();
+            if(items.length){            
+                dojo.forEach(items, function(selectedItem){
+                    if(selectedItem !== null){
+                        var idexpedition = grid2.store.getValues(selectedItem, 'idexpedition');
+                        dojo.query("#idexpedition").val(idexpedition);
+                        var detaille = ' '+grid2.store.getValues(selectedItem, 'label');
+                        dojo.query("#detaille").html(detaille);                      
+                    } 
+                }); 
+            }
+        </script>
+        <p>Êtes-vous sûr de vouloir supprimer <div id="detaille"></div>
+        </p>
+        <form action="<?php echo $this->url(array('action' => 'supprimer')); ?>" method="post">
+            <div>
+                <input type="hidden" id ="idexpedition" name="idexpedition" value="" />
+                <button data-dojo-type="dijit/form/Button"  type="submit" name="supprimer" value="Oui">
+                    Oui
+                </button>
+                <button data-dojo-type="dijit/form/Button" 
+                        type="button" data-dojo-props="onClick:function(){dialog.hide();}"
+                        id="cancel" >Non</button>
+            </div>
+        </form>
+    </div>
+</div>
 <?php
 
 echo $this->contentPane()->captureEnd('tab1');

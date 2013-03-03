@@ -60,13 +60,15 @@ class CommuneController extends Zend_Controller_Action {
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             if ($form->isValid($formData)) {
-                $id = $form->getValue('id');
+                $id = $this->_getParam('id', 0);
                 $label = $form->getValue('label');
                 $nom = $form->getValue('nom');
                 $communes = new Application_Model_DbTable_Commune();
-
+ try {
                 $communes->modifierCommune($id, $label, $nom);
-
+ } catch (Exception $e) {
+                    $this->getLog()->log("modifier commune : " . $e, Zend_Log::ERR);
+                }
                 $this->_helper->redirector('index');
             } else {
                 $form->populate($formData);
@@ -84,7 +86,7 @@ class CommuneController extends Zend_Controller_Action {
         if ($this->getRequest()->isPost()) {
             $supprimer = $this->getRequest()->getPost('supprimer');
             if ($supprimer == 'Oui') {
-                $id = $this->getRequest()->getPost('id');
+                $id = $this->getRequest()->getPost('idcommune');
                 $communes = new Application_Model_DbTable_Commune();
                 $communes->supprimerCommune($id);
             }

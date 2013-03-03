@@ -5,7 +5,7 @@ $this->headTitle($this->title);
 
 <?php
 $this->tabContainer()->captureStart('tabcontainer', array(), array());
-$this->contentPane()->captureStart('tab1', array(), array('title' => 'User Manager'));
+$this->contentPane()->captureStart('tab1', array(), array('title' => 'Multimedia Manager'));
 ?>
 <p><a href="<?php
 echo $this->url(array('controller' => 'multimedia',
@@ -18,41 +18,44 @@ echo $this->url(array('controller' => 'multimedia',
 <script type="text/javascript" >    
     var structure = [ 
         { field: 'idmultimedia', name: 'ID', width: '50px' },
-        { field: 'label', name : 'Nom', width: '100px' },
-        { field: '', name : 'Date naissance', width: '200px'},
-        { field: 'phone', name : 'phone', width: '200px'}
+        { field: 'label', name : 'Libelle', width: '100px' },
+        { field: 'date_creation', name : 'Date création', width: '200px'},
+        { field: 'date_modification', name : 'Date modification', width: '200px'}
     ]; 
 </script>
 
 
-<!--<th>Nom</th>
-        <th>Prenom</th>
-        <th>Date naissance</th>
-        <th>phone</th>
-        <th>&nbsp;</th>-->
-
-<span dojoType="dojox.data.QueryReadStore" jsId="idpersonne" url="/v_esp/public/personne/indexjson"></span>
+<span dojoType="dojox.data.QueryReadStore" jsId="idmultimedia" url="/v_esp/public/multimedia/indexjson"></span>
 <div id="grid1" data-dojo-id="grid2" dojoType="dojox.grid.DataGrid" 
-     data-dojo-props="store:idpersonne,
+     data-dojo-props="store:idmultimedia,
      structure:'structure'  ,
      clientSort:true,
      rowSelector:'20px'"
      style=" height: 260px;"></div>
 
 <div data-dojo-type="dijit/form/Form" id="modifier" data-dojo-id="myForm"
-     encType="multipart/form-data" action="personne/modifier" method="GET">
+     encType="multipart/form-data" action="multimedia/modifier" method="GET">
     <script type="dojo/on" data-dojo-event="submit">
         dojo.require("dojo.NodeList-manipulate");
+        dojo.require("dojox.form.Uploader");
+        dojo.require("dojox.form.uploader.plugins.IFrame");
         var items = grid2.selection.getSelected();
         if(items.length){            
             dojo.forEach(items, function(selectedItem){
                 if(selectedItem !== null){
-                    attribute = 'idpersonne';
+                    attribute = 'idmultimedia';
                     var value = grid2.store.getValues(selectedItem, attribute);                    
-                    var idpersonne = dojo.query("#id").val(value);
+                    var idmultimedia = dojo.query("#id").val(value);
                 } 
             }); 
         }
+        dojo.require("dojox.form.Uploader");
+        dojo.require("dojox.form.uploader.plugins.Flash");
+
+        var u = new dojox.form.Uploader(
+                {label:"Programmatic Uploader", multiple:true, 
+                    uploadOnSelect:true, url:"UploadFile.php"});
+        dojo.byId("modifier").appendChild(u.domNode);
     </script>
 
     <input type="hidden" id="id" name="id"  value="" />
@@ -78,11 +81,9 @@ echo $this->url(array('controller' => 'multimedia',
             if(items.length){            
                 dojo.forEach(items, function(selectedItem){
                     if(selectedItem !== null){
-                        var idpersonne = grid2.store.getValues(selectedItem, 'idpersonne');
-                        dojo.query("#idpersonne").val(idpersonne);
-                        var nom = grid2.store.getValues(selectedItem, 'nom');
-                        var prenom = grid2.store.getValues(selectedItem, 'prenom');
-                        var detaille = prenom + ' ' + nom;
+                        var idmultimedia = grid2.store.getValues(selectedItem, 'idmultimedia');
+                        dojo.query("#idmultimedia").val(idmultimedia);
+                        var detaille = ' '+grid2.store.getValues(selectedItem, 'label');
                         dojo.query("#detaille").html(detaille);                      
                     } 
                 }); 
@@ -92,7 +93,7 @@ echo $this->url(array('controller' => 'multimedia',
         </p>
         <form action="<?php echo $this->url(array('action' => 'supprimer')); ?>" method="post">
             <div>
-                <input type="hidden" id ="idpersonne" name="idpersonne" value="" />
+                <input type="hidden" id ="idmultimedia" name="idmultimedia" value="" />
                 <button data-dojo-type="dijit/form/Button"  type="submit" name="supprimer" value="Oui">
                     Oui
                 </button>

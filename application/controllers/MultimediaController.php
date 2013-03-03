@@ -11,7 +11,7 @@ class MultimediaController extends Zend_Controller_Action {
 
     public function indexAction() {
         $multimedia = new Application_Model_DbTable_Multimedia();
-        $this->view->personnes = $multimedia->fetchAll;
+        $this->view->multimedia = $multimedia->fetchAll;
     }
 
     public function indexjsonAction() {
@@ -36,18 +36,11 @@ class MultimediaController extends Zend_Controller_Action {
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             if ($form->isValid($formData)) {
-                $nom = $form->getValue('nom');
-                $prenom = $form->getValue('prenom');
-                $date_naissance = $form->getValue('date_naissance');
-                $adresse = $form->getValue('adresse');
-                $phone = $form->getValue('phone');
-                $mail = $form->getValue('mail');
-                $idcommune = $form->getValue('commune_idcommune');
-                $personnes = new Application_Model_DbTable_Personne();
-                if (empty($idcommune)) {
-                    $idcommune = null;
-                }
-                $personnes->ajouterPersonne($nom, $prenom, $date_naissance, $adresse, $phone, $mail, $idcommune);
+                $idtype = $form->getValue('type_idtype');
+                $label = $form->getValue('label');
+                
+                $multimedia = new Application_Model_DbTable_Multimedia();
+                $multimedia->ajouterMultimedia($label,$idtype);
 
                 $this->_helper->redirector('index');
             } else {
@@ -57,7 +50,7 @@ class MultimediaController extends Zend_Controller_Action {
     }
 
     public function modifierAction() {
-        $form = new Application_Form_Personne();
+        $form = new Application_Form_Multimedia();
         $form->envoyer->setLabel('Sauvegarder');
         $this->view->form = $form;
 
@@ -66,20 +59,13 @@ class MultimediaController extends Zend_Controller_Action {
             if ($form->isValid($formData)) {
                 $id = $this->_getParam('id', 0);
                 $idtype = $form->getValue('type_idtype');
-                $prenom = $form->getValue('prenom');
-                $date_naissance = $form->getValue('date_naissance');
-                $adresse = $form->getValue('adresse');
-                $phone = $form->getValue('phone');
-                $mail = $form->getValue('mail');
-                $idcommune = $form->getValue('commune_idcommune');
-                if(empty($idcommune)){
-                $idcommune = null;
-                }
-                $personnes = new Application_Model_DbTable_Personne();
+                $label = $form->getValue('label');
+                
+                $multimedia = new Application_Model_DbTable_Multimedia();
                 try {
-                    $personnes->modifierPersonne($id, $nom, $prenom, $date_naissance, $adresse, $phone, $mail, $idcommune);
+                    $multimedia->modifierMultimedia($id, $label,$idtype);
                 } catch (Exception $e) {
-                    $this->getLog()->log("modifier Personne : " . $e, Zend_Log::ERR);
+                    $this->getLog()->log("modifier multimedia : " . $e, Zend_Log::ERR);
                 }
                 $this->_helper->redirector('index');
             } else {
@@ -88,8 +74,8 @@ class MultimediaController extends Zend_Controller_Action {
         } else {
             $id = $this->_getParam('id', 0);
             if ($id > 0) {
-                $personnes = new Application_Model_DbTable_Personne();
-                $form->populate($personnes->obtenirPersonne($id));
+                $multimedia = new Application_Model_DbTable_Multimedia();
+                $form->populate($multimedia->obtenirMultimedia($id));
             }
         }
     }
@@ -98,16 +84,16 @@ class MultimediaController extends Zend_Controller_Action {
         if ($this->getRequest()->isPost()) {
             $supprimer = $this->getRequest()->getPost('supprimer');
             if ($supprimer == 'Oui') {
-                $id = $this->getRequest()->getPost('idpersonne');
-                $personnes = new Application_Model_DbTable_Personne();
-                $personnes->supprimerPersonne($id);
+                $id = $this->getRequest()->getPost('idmultimedia');
+                $multimedia = new Application_Model_DbTable_Multimedia();
+                $multimedia->supprimerMultimedia($id);
             }
 
-            $this->_helper->redirector('index');
+           $this->_helper->redirector('index');
         } else {
             $id = $this->_getParam('id', 0);
-            $personnes = new Application_Model_DbTable_Personne();
-            $this->view->personne = $personnes->obtenirPersonne($id);
+            $multimedia = new Application_Model_DbTable_Multimedia();
+            $this->view->personne = $multimedia->obtenirMultimedia($id);
         }
     }
     

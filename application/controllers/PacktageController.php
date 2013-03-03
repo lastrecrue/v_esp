@@ -14,14 +14,16 @@ class PacktageController extends Zend_Controller_Action {
      public function indexjsonAction() {
 
         $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender();
-
-        $packtage = new Application_Model_DbTable_Packtage();
-        $packtages = $packtage->fetchAll();
-        $dojoData = new Zend_Dojo_Data('idpacktage', $packtages, 'idpacktage');
+        $this->_helper->viewRenderer->setNoRender(true);
         $response = $this->getResponse();
         $response->setHeader('Content-type', 'application/json', true);
-        $response->setBody($dojoData);
+        
+        
+        $packtage = new Application_Model_DbTable_Packtage();
+        $packtages = $packtage->fetchAll()->toArray();
+        $dataArray = array('identifier' => 'idpacktage', 'items' => $packtages);
+        $json = Zend_Json::encode($dataArray);
+        return $response->setBody($json);
     }
 
     public function ajouterAction() {
@@ -59,11 +61,14 @@ class PacktageController extends Zend_Controller_Action {
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             if ($form->isValid($formData)) {
-                $id = $form->getValue('id');
+                $id = $this->_getParam('id', 0);
                 $label = $form->getValue('label');
                 $packtages = new Application_Model_DbTable_Packtage();
-                $packtages->modifierPacktage($id, $label);
-
+                try {               
+                    $packtages->modifierPacktage($id, $label);
+                } catch (Exception $e) {
+                    $this->getLog()->log("modifier patcktage : " . $e, Zend_Log::ERR);
+                }
                 $this->_helper->redirector('index');
             } else {
                 $form->populate($formData);
@@ -71,8 +76,8 @@ class PacktageController extends Zend_Controller_Action {
         } else {
             $id = $this->_getParam('id', 0);
             if ($id > 0) {
-                $packtages = new Application_Model_DbTable_Packtage();
-                $form->populate($packtages->obtenirPacktage($id));
+                $douares = new Application_Model_DbTable_Packtage();
+                $form->populate($douares->obtenirPacktage($id));
             }
         }
     }
@@ -81,11 +86,10 @@ class PacktageController extends Zend_Controller_Action {
         if ($this->getRequest()->isPost()) {
             $supprimer = $this->getRequest()->getPost('supprimer');
             if ($supprimer == 'Oui') {
-                $id = $this->getRequest()->getPost('id');
+                $id = $this->getRequest()->getPost('idpacktage');
                 $packtages = new Application_Model_DbTable_Packtage();
                 $packtages->supprimerPacktage($id);
             }
-
             $this->_helper->redirector('index');
         } else {
             $id = $this->_getParam('id', 0);

@@ -15,14 +15,14 @@ class Application_Model_DbTable_Packtage extends Zend_Db_Table_Abstract {
 
     public function ajouterPacktage($label) {
         $data = array(
-            'label' => $label,
+            'label' => $label
         );
         $this->insert($data);
     }
 
     public function modifierPacktage($id, $label) {
         $data = array(
-            'label' => $label,
+            'label' => $label
         );
         $this->update($data, 'idpacktage = ' . (int) $id);
     }

@@ -16,7 +16,7 @@ class Application_Model_DbTable_Commune extends Zend_Db_Table_Abstract {
     public function ajouterCommune($label, $nom) {
         $data = array(
             'label' => $label,
-            'nom' => $nom,
+            'nom' => $nom
         );
         $this->insert($data);
     }
@@ -24,7 +24,7 @@ class Application_Model_DbTable_Commune extends Zend_Db_Table_Abstract {
     public function modifierCommune($id, $label, $nom) {
         $data = array(
             'label' => $label,
-            'nom' => $nom,
+            'nom' => $nom
         );
         $this->update($data, 'idcommune = ' . (int) $id);
     }

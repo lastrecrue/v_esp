@@ -14,24 +14,27 @@ class Application_Model_DbTable_Multimedia extends Zend_Db_Table_Abstract
         return $row->toArray();
     }
     
-    public function ajouterMultimedia($label, $path, $typeId) {
+    public function ajouterMultimedia($label, $typeId) {
         $dateToday = date('Y-m-d H:i:s');
+        $path =  '../Multimedia_Files/'.$typeId.'/';
         $data = array(
             'label' => $label,
             'path' => $path,
             'type_idtype' => $typeId,
             'date_creation' => $dateToday,
+            'date_modification' => $dateToday
         );
         $this->insert($data);
     }
 
-    public function modifierMultimedia($id, $label, $path, $typeId) {
+    public function modifierMultimedia($id, $label, $typeId) {
         $dateToday = date('Y-m-d H:i:s');
+        $path =  '../Multimedia_Files/'.$typeId.'/';
         $data = array(
             'label' => $label,
             'path' => $path,
             'type_idtype' => $typeId,
-            'date_modificaton' => $dateToday
+            'date_modification' => $dateToday
         );
         $this->update($data,'idmultimedia = ' . (int) $id);
     }

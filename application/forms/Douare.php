@@ -34,12 +34,12 @@ class Application_Form_Douare extends Zend_Form {
                 ->addFilter('StringTrim')
                 ->addValidator('NotEmpty');
 
-        $idcommune = new Zend_Dojo_Form_Element_FilteringSelect('idcommune');
+        $idcommune = new Zend_Dojo_Form_Element_FilteringSelect('commune_idcommune');
         $idcommune->setLabel('Commune')
                 ->setAutoComplete(true)
                 ->setStoreId('communeStore')
                 ->setStoreType('dojo.data.ItemFileReadStore')
-                ->setStoreParams(array('url' => '/v_esp/public/commune/communelist'))
+                ->setStoreParams(array('url' => '../commune/communelist'))
                 ->setAttrib("searchAttr", "label")
                 ->setRequired(true);
 
