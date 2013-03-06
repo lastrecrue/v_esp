@@ -43,7 +43,8 @@ echo $this->doctype();
                     ->addStyleSheetModule('dijit.themes.tundra');
             $this->dojo()->requireModule('dojox.data.QueryReadStore')
                     ->requireModule('dojox.grid.DataGrid')
-                    ->requireModule('dijit.form.Button');
+                    ->requireModule('dijit.form.Button')
+                    ->requireModule('dojox.form.Uploader');
             echo $this->dojo();
 
 

@@ -6,7 +6,7 @@
  */
 require_once 'FileUploaderDecorator.php';
 
-class Element_FileUploader extends Zend_Form_Element {
+class Element_FileUploader extends Zend_Form_Element_File {
 
 //    protected $_format = '<label for="%s">%s</label> <input id="%s" name="%s" type="text" value="%s"/>';
 
