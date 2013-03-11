@@ -37,33 +37,47 @@ class Application_Form_Expedition extends Zend_Form {
                 ->setStoreId('packtageStore')
                 ->setStoreType('dojo.data.ItemFileReadStore')
                 ->setStoreParams(array('url' => '../packtage/packtagelist'))
-                ->setAttrib("searchAttr", "label")
-                ->setRequired(true);
+                ->setAttrib("searchAttr", "label");
+        $idexp = $this->getAttrib('id');
+
+
+        $element = $this->initDnd($idexp);
+
 
         $envoyer = new Zend_Dojo_Form_Element_Button('envoyer', array('type' => 'submit'));
         $envoyer->setAttrib('idexpedition', 'boutonenvoyer');
 
-        $this->addElements(array($id, $label, $date_init, $date_reel, $nb_famille, $idpacktage, $envoyer));
+        $this->addElements(array($id, $label, $date_init, $date_reel, $nb_famille, $idpacktage, $element, $envoyer));
     }
 
-    public function initDnd($id, $source, $destination) {
-        $label = new Zend_Dojo_Form_Element_TextBox('label');
-        $label->setLabel('Label')
-                ->setRequired(true)
-                ->addFilter('StripTags')
-                ->addFilter('StringTrim')
-                ->addValidator('NotEmpty');
-        $label->setValue($id);
-
-        $this->setName('Expedition Personne');
-        $id = new Zend_Form_Element_Hidden('idexpedition');
-        $id->addFilter('Int');
-
-        $element = new Element_ListShuttle('dgdBenevole');
+    public function initDnd($idexp) {
+        $source = $this->getPersonneSource($idexp);
+        $destination = $this->getPersonneDest($idexp);
+        $element = new Element_ListShuttle('Benevole');
         $element->setLabel('Benevole : ');
         $element->setAttribs(array('source' => $source, 'destination' => $destination));
 
-        $this->addElements(array($element, $label));
+        return $element;
+    }
+
+    private function getPersonneDest($id) {
+        $personne = new Application_Model_DbTable_Personne();
+        if ($id != 0) {
+            $destination = $personne->getPersonneInExpedition($id);
+        } else {
+            $destination = false;
+        }
+        return $destination;
+    }
+
+    private function getPersonneSource($id) {
+        $personne = new Application_Model_DbTable_Personne();
+        if ($id != 0) {
+            $source = $personne->getPersonneNotInExpedition($id);
+        } else {
+            $source = false;
+        }
+        return $source;
     }
 
 }

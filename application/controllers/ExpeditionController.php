@@ -24,29 +24,8 @@ class ExpeditionController extends Zend_Controller_Action {
         $response->setBody($dojoData);
     }
 
-    public function ajouterpersonneAction() {
-        $form = new Application_Form_Expedition();
-        $form->clearElements();
-
-        $this->view->form = $form;
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            if ($form->isValid($formData)) {
-                //TODO
-            }
-        } else {
-            $id = $this->_getParam('id', 0);
-            $personne = new Application_Model_DbTable_Personne();
-            // TODO expedition personne
-            $source = $personne->getPersonneInExpedition($id);
-            $destination = $personne->getPersonneNotInExpedition($id);
-            $form->initDnd($id, $source, $destination);
-        }
-    }
-
     public function ajouterAction() {
-        $form = new Application_Form_Expedition();
+        $form = new Application_Form_Expedition(0);
         $form->envoyer->setLabel('Ajouter');
         $this->view->form = $form;
 
@@ -66,24 +45,28 @@ class ExpeditionController extends Zend_Controller_Action {
                     $date_reel->set('01/01/9999', 'dd/MM/yy');
                 }
                 $nb_famille = (int) $form->getValue('nb_famille');
-                
+
                 $idpacktage = (int) $form->getValues('idpacktage');
-                
+
                 $expeditions = new Application_Model_DbTable_Expedition();
                 $expeditions->ajouterExpedition($label, $date_init->toString('YYYY-MM-dd HH:mm:ss'), $date_reel->toString('YYYY-MM-dd HH:mm:ss'), $nb_famille, $idpacktage);
 
                 $this->_helper->redirector('index');
             } else {
+
                 $form->populate($formData);
             }
         }
     }
 
     public function modifierAction() {
-        $form = new Application_Form_Expedition();
+        $id = $this->_getParam('id', 0);
+       
+        $form = new Application_Form_Expedition(array('id'=>$id));
         $form->envoyer->setLabel('Sauvegarder');
         $this->view->form = $form;
-
+        
+                
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             if ($form->isValid($formData)) {
@@ -116,6 +99,8 @@ class ExpeditionController extends Zend_Controller_Action {
             }
         }
     }
+
+    
 
     public function supprimerAction() {
         if ($this->getRequest()->isPost()) {

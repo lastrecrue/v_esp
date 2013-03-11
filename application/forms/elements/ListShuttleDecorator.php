@@ -40,22 +40,26 @@ class Decorator_ListShuttle extends Zend_Form_Decorator_Abstract {
         $label = htmlentities($element->getLabel());
         $id = htmlentities($element->getId());
         $value = $element->getValue();
-        
-        $sources = $element->getAttrib('source');//$value->source;
-        $destinations = $element->getAttrib('destination');//$value->destination;
 
-        $markup = "<div id=\"".$id."\"class=\"dndCss\">";
-        $markup = $markup . "<label for=\"label\" class=\"dndLabelCss\">".$label."</label>";
+        $sources = $element->getAttrib('source'); //$value->source;
+        $destinations = $element->getAttrib('destination'); //$value->destination;
+
+        $markup = "<div id=\"" . $id . "name=\"" . $name . "\" \"class=\"dndCss\">";
+        $markup = $markup . "<label for=\"label\" class=\"dndLabelCss\">" . $label . "</label>";
         $markup = $markup . "<div dojoType=\"dojo.dnd.Source\" id=source class=\"dndSourceCss\">";
 //        var_dump($sources);
-        foreach ($sources as $personne) {          
+        if ($sources) {
+            foreach ($sources as $personneS) {
 //            var_dump($personne);
-            $markup = $markup . "<div class=\"dojoDndItem\" dndData=\"".$personne->idpersonne."\">".$personne->nom."</div>";
+                $markup = $markup . "<div class=\"dojoDndItem\" dndData=\"" . $personneS['idpersonne'] . "\">" . $personneS['nom'] . "</div>";
+            }
         }
         $markup = $markup . "</div>";
-        $markup = $markup . "<div dojoType=\"dojo.dnd.Source\" id=destination style=\"dndDestCss\">";
-        for ($index = 0; $index < 3; $index++) {
-            $markup = $markup . "<div class=\"dojoDndItem\" dndData=\"C\">Item 3</div>";
+        $markup = $markup . "<div dojoType=\"dojo.dnd.Source\" id=destination class=\"dndDestCss\">";
+        if ($destinations) {
+            foreach ($destinations as $personneD) {
+                $markup = $markup . "<div class=\"dojoDndItem\" dndData=\"" . $personneD['idpersonne'] . "\">" . $personneD['nom'] . "</div>";
+            }
         }
         $markup = $markup . "</div>";
         $markup = $markup . "</div>";

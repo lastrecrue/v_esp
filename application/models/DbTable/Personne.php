@@ -43,6 +43,28 @@ class Application_Model_DbTable_Personne extends Zend_Db_Table_Abstract {
         $this->delete('idpersonne =' . (int) $id);
     }
 
+    public function getPersonneInExpedition($id) {
+        $sql = "select * from expedition_has_type_personne  where  expedition_idexpedition = " . $id;
+        $stmt = $this->getAdapter()->query($sql);
+        $result = $stmt->fetchAll();
+        if(empty($result)){
+            return false;
+        }
+        return $result;
+    }
+
+    public function getPersonneNotInExpedition($id) {
+        $sqlin = "select personne_idpersonne from expedition_has_type_personne  where  expedition_idexpedition = " . $id;
+        $sql = "select *from personne  where idpersonne not in (" . $sqlin . ")";
+
+        $stmt = $this->getAdapter()->query($sql);
+
+        $result = $stmt->fetchAll();
+        if(empty($result)){
+            return false;
+        }
+        return $result;
+    }
 
 }
 
