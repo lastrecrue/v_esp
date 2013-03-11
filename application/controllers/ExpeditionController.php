@@ -61,12 +61,12 @@ class ExpeditionController extends Zend_Controller_Action {
 
     public function modifierAction() {
         $id = $this->_getParam('id', 0);
-       
-        $form = new Application_Form_Expedition(array('id'=>$id));
+
+        $form = new Application_Form_Expedition(array('id' => $id));
         $form->envoyer->setLabel('Sauvegarder');
         $this->view->form = $form;
-        
-                
+
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             if ($form->isValid($formData)) {
@@ -99,8 +99,6 @@ class ExpeditionController extends Zend_Controller_Action {
             }
         }
     }
-
-    
 
     public function supprimerAction() {
         if ($this->getRequest()->isPost()) {

@@ -51,14 +51,14 @@ class Decorator_ListShuttle extends Zend_Form_Decorator_Abstract {
         if ($sources) {
             foreach ($sources as $personneS) {
 //            var_dump($personne);
-                $markup = $markup . "<div class=\"dojoDndItem\" dndData=\"" . $personneS['idpersonne'] . "\">" . $personneS['nom'] . "</div>";
+                $markup = $markup . $this->getDivByPersonne($personneS);
             }
         }
         $markup = $markup . "</div>";
         $markup = $markup . "<div dojoType=\"dojo.dnd.Source\" id=destination class=\"dndDestCss\">";
         if ($destinations) {
             foreach ($destinations as $personneD) {
-                $markup = $markup . "<div class=\"dojoDndItem\" dndData=\"" . $personneD['idpersonne'] . "\">" . $personneD['nom'] . "</div>";
+                $markup = $markup . $this->getDivByPersonne($personneD);
             }
         }
         $markup = $markup . "</div>";
@@ -66,6 +66,36 @@ class Decorator_ListShuttle extends Zend_Form_Decorator_Abstract {
 //        $markup = sprintf($this->_format, $name, $label, $id, $name, $value);
 //        echo $markup;
         return sprintf($markup);
+    }
+    
+    private function getDivByPersonne($personne){
+        $id = $personne['idpersonne'];
+        $nom = $personne['nom'];
+        $result = "<div class=\"dojoDndItem\" dndData=\"" . $id. "\">" . $nom 
+                .$this->getInputByPersonneId($id)."</div>";
+        return $result;
+    }
+    
+    private function getInputByPersonneId($id){
+        return '<input type="hidden" id="personne'.$id.'" value="'.$id.'">';
+    }
+    
+    private function sendJsonJs(){
+        // TODO
+       $script =    '<script type="dojo/on" data-dojo-event="submit">
+                        dojo.require("dojo.NodeList-manipulate");
+                        var items = grid2.selection.getSelected();
+                        if(items.length){            
+                            dojo.forEach(items, function(selectedItem){
+                                if(selectedItem !== null){
+                                    attribute = "idexpedition";
+                                    var value = grid2.store.getValues(selectedItem, attribute);                    
+                                    var idexpedition = dojo.query("#id").val(value);
+                                } 
+                            }); 
+                        }
+                    </script>';
+       return $script;
     }
 
 }
