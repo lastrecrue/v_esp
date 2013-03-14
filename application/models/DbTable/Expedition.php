@@ -29,14 +29,14 @@ class Application_Model_DbTable_Expedition extends Zend_Db_Table_Abstract {
         $this->update($data, 'idexpedition = ' . $id);
     }
 
-    public function ajouterExpedition($label, $date_int, $date_reel, $nb_famille, $idpacktage) {
+    public function ajouterExpedition($label, $date_int, $date_reel, $nb_famille, $idpacktage, $personneId) {
         $data = array(
             'label' => $label,
             'date_init' => $date_int,
             'date_reel' => $date_reel,
             'nb_famille' => $nb_famille,
             'packtage_idpacktage' => $idpacktage
-        );        
+        );
         $this->insert($data);
     }
 

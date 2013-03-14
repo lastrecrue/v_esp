@@ -7,8 +7,8 @@ class ExpeditionController extends Zend_Controller_Action {
     }
 
     public function indexAction() {
-        $expeditions = new Application_Model_DbTable_Expedition();
-        $this->view->expeditions = $expeditions->fetchAll();
+//        $expeditions = new Application_Model_DbTable_Expedition();
+//        $this->view->expeditions = $expeditions->fetchAll();
     }
 
     public function indexjsonAction() {
@@ -23,6 +23,8 @@ class ExpeditionController extends Zend_Controller_Action {
         $response->setHeader('Content-type', 'application/json', true);
         $response->setBody($dojoData);
     }
+    
+   
 
     public function ajouterAction() {
         $form = new Application_Form_Expedition(0);
@@ -33,7 +35,7 @@ class ExpeditionController extends Zend_Controller_Action {
             $formData = $this->getRequest()->getPost();
             if ($form->isValid($formData)) {
                 $label = $form->getValue('label');
-
+                
                 $date_init = new Zend_Date();
                 $date_init->set($form->getValue('date_init'), 'dd/MM/yy');
                 $date_reel = $form->getValue('date_reel');
@@ -47,9 +49,11 @@ class ExpeditionController extends Zend_Controller_Action {
                 $nb_famille = (int) $form->getValue('nb_famille');
 
                 $idpacktage = (int) $form->getValues('idpacktage');
+                
+                $personneId = $form->getValue('personneId');
 
                 $expeditions = new Application_Model_DbTable_Expedition();
-                $expeditions->ajouterExpedition($label, $date_init->toString('YYYY-MM-dd HH:mm:ss'), $date_reel->toString('YYYY-MM-dd HH:mm:ss'), $nb_famille, $idpacktage);
+                $expeditions->ajouterExpedition($label, $date_init->toString('YYYY-MM-dd HH:mm:ss'), $date_reel->toString('YYYY-MM-dd HH:mm:ss'), $nb_famille, $idpacktage, $personneId );
 
                 $this->_helper->redirector('index');
             } else {

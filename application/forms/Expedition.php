@@ -6,6 +6,7 @@ class Application_Form_Expedition extends Zend_Form {
 
     public function init() {
         Zend_Dojo::enableForm($this);
+
         $this->setName('Expedition');
         $id = new Zend_Form_Element_Hidden('idexpedition');
         $id->addFilter('Int');
@@ -43,8 +44,9 @@ class Application_Form_Expedition extends Zend_Form {
 
         $element = $this->initDnd($idexp);
 
-
-        $envoyer = new Zend_Dojo_Form_Element_Button('envoyer', array('type' => 'submit'));
+// array('onclick' => 'loadData();')
+//        array('type' => 'submit')
+        $envoyer = new Zend_Dojo_Form_Element_Button('envoyer', array('onclick' => 'submitPersonnesBenevoleAction();'));
         $envoyer->setAttrib('idexpedition', 'boutonenvoyer');
 
         $this->addElements(array($id, $label, $date_init, $date_reel, $nb_famille, $idpacktage, $element, $envoyer));
@@ -75,7 +77,7 @@ class Application_Form_Expedition extends Zend_Form {
         if ($id != 0) {
             $source = $personne->getPersonneNotInExpedition($id);
         } else {
-            $source = false;
+            $source = $personne->fetchAll();
         }
         return $source;
     }

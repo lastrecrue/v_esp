@@ -5,6 +5,24 @@ $this->headTitle($this->title);
 echo $this->form;
 ?>
 
+<script type="text/javascript" >
+    function submitPersonnesBenevoleAction() {
+        var peronnesSub = dojo.byId('destination');
+        var personnesSubDndSrc = new dojo.dnd.Container(peronnesSub);
+        var peronnesarray = new Array();
+        var idx = 0;
+        personnesSubDndSrc.getAllNodes().forEach(function(node) {
+            peronnesarray[idx++] = node.dnddata;
+        });
+        for (var i = 0; i < idx; i++) {
+            var inp = dojo.create('input', { type: "hidden", name: "personneId[" + i + "]", value: peronnesarray[i] },
+            dojo.byId('Expedition'), 'last');
+        }
+        
+        dojo.byId('Expedition').submit();
+    }
+</script>
+
 
 
 

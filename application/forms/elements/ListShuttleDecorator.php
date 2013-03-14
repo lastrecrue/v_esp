@@ -43,14 +43,13 @@ class Decorator_ListShuttle extends Zend_Form_Decorator_Abstract {
 
         $sources = $element->getAttrib('source'); //$value->source;
         $destinations = $element->getAttrib('destination'); //$value->destination;
+        $markup = "";
 
-        $markup = "<div id=\"" . $id . "name=\"" . $name . "\" \"class=\"dndCss\">";
-        $markup = $markup . "<label for=\"label\" class=\"dndLabelCss\">" . $label . "</label>";
+        $markup = $markup . "<dt><label for=\"label\" class=\"dndLabelCss\">" . $label . "</label></dt>";
+        $markup = $markup . "<dd class=\"dndCss\">";
         $markup = $markup . "<div dojoType=\"dojo.dnd.Source\" id=source class=\"dndSourceCss\">";
-//        var_dump($sources);
         if ($sources) {
             foreach ($sources as $personneS) {
-//            var_dump($personne);
                 $markup = $markup . $this->getDivByPersonne($personneS);
             }
         }
@@ -61,41 +60,15 @@ class Decorator_ListShuttle extends Zend_Form_Decorator_Abstract {
                 $markup = $markup . $this->getDivByPersonne($personneD);
             }
         }
-        $markup = $markup . "</div>";
-        $markup = $markup . "</div>";
-//        $markup = sprintf($this->_format, $name, $label, $id, $name, $value);
-//        echo $markup;
+        $markup = $markup . "</div></dd>";
         return sprintf($markup);
     }
-    
-    private function getDivByPersonne($personne){
+
+    private function getDivByPersonne($personne) {
         $id = $personne['idpersonne'];
         $nom = $personne['nom'];
-        $result = "<div class=\"dojoDndItem\" dndData=\"" . $id. "\">" . $nom 
-                .$this->getInputByPersonneId($id)."</div>";
+        $result = "<div class=\"dojoDndItem\" dndData=\"" . $id . "\">" . $nom . "</div>";
         return $result;
-    }
-    
-    private function getInputByPersonneId($id){
-        return '<input type="hidden" id="personne'.$id.'" value="'.$id.'">';
-    }
-    
-    private function sendJsonJs(){
-        // TODO
-       $script =    '<script type="dojo/on" data-dojo-event="submit">
-                        dojo.require("dojo.NodeList-manipulate");
-                        var items = grid2.selection.getSelected();
-                        if(items.length){            
-                            dojo.forEach(items, function(selectedItem){
-                                if(selectedItem !== null){
-                                    attribute = "idexpedition";
-                                    var value = grid2.store.getValues(selectedItem, attribute);                    
-                                    var idexpedition = dojo.query("#id").val(value);
-                                } 
-                            }); 
-                        }
-                    </script>';
-       return $script;
     }
 
 }
